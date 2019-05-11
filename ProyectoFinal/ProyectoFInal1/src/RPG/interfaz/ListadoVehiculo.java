@@ -9,10 +9,12 @@ public class ListadoVehiculo extends javax.swing.JFrame {
 
     public static ArrayList<Vehiculo> listadoVehiculos = new ArrayList<Vehiculo>();
     public static ArrayList<Vehiculo> vehiculosJuego = new ArrayList<Vehiculo>();
-    public static String dato,nombreComparado, nombre, tipoVehiculo,armaIntegrada,creadorVehiculo;
-    int contadorVehiculo = 0;
+    private String dato,nombreComparado, nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,ataque,defensa;
+    private int vida,eliminaciones;
+    private int contadorVehiculo = 0;
  
     String[] arregloTemporal = new String[3];
+    
     public static Vehiculo vehiculoUno;
     public static Vehiculo vehiculoDos;
     public static Vehiculo vehiculoTres;
@@ -23,7 +25,7 @@ public class ListadoVehiculo extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         listadoVehiculos = (ArrayList<Vehiculo>) IngresarVehiculos.listaVehiculo.clone();
-        creadorVehiculo = ListadoJugador.dato;
+        creadorVehiculo = ListadoJugador.nombre;
         mostrarListado(); 
         listadoNulo();
         verContador.setText("3");
@@ -35,23 +37,16 @@ public class ListadoVehiculo extends javax.swing.JFrame {
     }
     public void mostrarListado(){
         String listado[][] = new String[listadoVehiculos.size()][5];
-        int contador = 1;
-        String numero;
         for (int i = 0; i < listadoVehiculos.size(); i++) {
-            numero = Integer.toString(contador);
-            listado[i][0] = numero;
+            listado[i][0]=listadoVehiculos.get(i).getIdentificador();
             listado[i][1]=listadoVehiculos.get(i).getNombre();
             listado[i][2]=listadoVehiculos.get(i).getTipoVehiculo();
             listado[i][3]=listadoVehiculos.get(i).getArmaIntegrada();
             listado[i][4]=listadoVehiculos.get(i).getCreadorAuto();
-            contador++;
         }
-        tablaVehiculo.setModel(new javax.swing.table.DefaultTableModel(
-            listado,
-            new String [] {
+        tablaVehiculo.setModel(new javax.swing.table.DefaultTableModel(listado,new String [] {
                 "NO.","NOMBRE", "TIPO DE VEHICULO", "ARMA INTEGRADA","PERTENECE A"
-            }
-        ));
+        }));
     } 
     public void mostrarVehiculos(){       
         String [][] listadoJuego = new String[3][3];
@@ -64,9 +59,7 @@ public class ListadoVehiculo extends javax.swing.JFrame {
             listadoJuego[0][2] = vehiculoUno.getArmaIntegrada();
             listadoJuego[1][2] = vehiculoDos.getArmaIntegrada();
             listadoJuego[2][2] = vehiculoTres.getArmaIntegrada();
-        tablaSeleccionados.setModel(new javax.swing.table.DefaultTableModel(
-            listadoJuego,
-            new String [] {
+        tablaSeleccionados.setModel(new javax.swing.table.DefaultTableModel(listadoJuego, new String [] {
                 "NOMBRE", "TIPO DE VEHICULO", "ARMA INTEGRADA"
             }
         ));
@@ -79,14 +72,18 @@ public class ListadoVehiculo extends javax.swing.JFrame {
         armaIntegrada = String.valueOf(this.tablaVehiculo.getValueAt(fila,3)); 
         String comparador = String.valueOf(this.tablaVehiculo.getValueAt(fila,0));
         arregloTemporal[contadorVehiculo] = comparador;
+        vida = listadoVehiculos.get(fila).getVida();
+        ataque = listadoVehiculos.get(fila).getAtaque();
+        defensa = listadoVehiculos.get(fila).getDefensa();
+        eliminaciones = listadoVehiculos.get(fila).getVida();
         if(contador == 0){
-            vehiculoUno = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo);
+            vehiculoUno = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,comparador,vida,ataque,defensa,0,0,eliminaciones);
         }
         if(contador == 1){
-            vehiculoDos = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo);
+            vehiculoDos = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,comparador,vida,ataque,defensa,0,0,eliminaciones);
         }
         if(contador == 2){
-            vehiculoTres = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo);
+            vehiculoTres = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,comparador,vida,ataque,defensa,0,0,eliminaciones);
         }   
         
     }
@@ -138,6 +135,7 @@ public class ListadoVehiculo extends javax.swing.JFrame {
         fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         titulo.setFont(new java.awt.Font("Dialog", 3, 36)); // NOI18N
@@ -276,8 +274,8 @@ public class ListadoVehiculo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed
-        SeleccionListado selecListado = new SeleccionListado();
-        selecListado.setVisible(true);
+        Inicio inicio = new Inicio();
+        inicio.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_salirActionPerformed
 

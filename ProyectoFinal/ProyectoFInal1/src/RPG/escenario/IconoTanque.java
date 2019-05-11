@@ -11,7 +11,8 @@ public class IconoTanque {
     ImageIcon imagen;
     ImageIcon tanque;
     int ancho, alto;
-    public static String trueFalse;
+    public static int reductorContador;
+    public static Boolean yaIngresado;
     
     public Icon insertarIcono(int criterioDimension,String terreno){
         switch(criterioDimension){
@@ -37,16 +38,19 @@ public class IconoTanque {
     public Icon seleccTerreno(String tipo){
         if(tipo.equals("llanura")){
             tanqueLlanura();
-            trueFalse = "true";
+            reductorContador =1;
+            yaIngresado = true;
         }
         if(tipo.equals("lake")){
             JOptionPane.showMessageDialog(null, "LOS TANQUES NO PUEDEN ESTAR EN LOS LAGOS");
-            trueFalse = "false";
-            //lake();
+            lake();
+            reductorContador =0;
+            yaIngresado = false;
         }
-        if(tipo.equals("mountain")){ 
-            trueFalse = "true";
+        if(tipo.equals("mountain")){
             tanqueMountain();
+            reductorContador =1;
+            yaIngresado = true;
         }
         return tanque;
     }

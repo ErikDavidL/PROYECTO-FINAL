@@ -2,13 +2,18 @@
 package RPG.interfaz;
 
 import RPG.jugador.Jugador;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class IngresarJugador extends javax.swing.JFrame {
 
     public static ArrayList<Jugador> listaJugador = new ArrayList<Jugador>();
-    
+    private final int nivel = 1;
+    private final int experiencia = 0;
+    private final int dinero = 100;
+    private String identificador;
     public IngresarJugador() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -27,6 +32,7 @@ public class IngresarJugador extends javax.swing.JFrame {
         fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         titulo.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 20)); // NOI18N
@@ -74,7 +80,9 @@ public class IngresarJugador extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
-        Jugador jugador = new Jugador(nombreJugador.getText());
+        int noIdentificador = listaJugador.size()+1;
+        identificador = Integer.toString(noIdentificador);
+        Jugador jugador = new Jugador(nombreJugador.getText(),nivel,experiencia,identificador,dinero);
         listaJugador.add(jugador);
         JOptionPane.showMessageDialog(null, "JUGADOR CREADO CON ÉXITO");
         nombreJugador.setText(null);

@@ -11,7 +11,8 @@ public class IconoAvion {
     ImageIcon imagen;
     ImageIcon avion;
     int ancho, alto;
-    public static String trueFalse;
+    public static int reductorContador;
+    public static Boolean yaIngresado;
     
     public Icon insertarIcono(int criterioDimension,String terreno){
         switch(criterioDimension){
@@ -37,16 +38,19 @@ public class IconoAvion {
     public Icon seleccTerreno(String tipo){
         if(tipo.equals("llanura")){
             avionLlanura();
-            trueFalse = "true";
+            reductorContador = 1;
+            yaIngresado = true;
         }
         if(tipo.equals("lake")){
             avionLake();
-            trueFalse = "true";
+            reductorContador = 1;
+            yaIngresado = true;
         }
         if(tipo.equals("mountain")){
             JOptionPane.showMessageDialog(null, "LOS AVIONES NO PUEDEN ESTAR EN LAS MONTAÑAS");
-            trueFalse = "false";
-            //mountain();
+            mountain();
+            reductorContador = 0;
+            yaIngresado = false;
         }
         return avion;
     }

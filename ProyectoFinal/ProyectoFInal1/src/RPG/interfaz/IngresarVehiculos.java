@@ -14,19 +14,23 @@ public class IngresarVehiculos extends javax.swing.JFrame {
     
     public static ArrayList<Vehiculo> listaVehiculo = new ArrayList<Vehiculo>();
     public static ArrayList<Jugador> listadoJugador =  new ArrayList<Jugador>();
-    
-    private final String seleccionAvion = "  Avión";
-    private final String seleccionTanque = "  Tanque"; 
-    int indice;
-    String[][] jugadorSeleccionado;
-    String verJugador;    
+    private final String seleccionAvion = "Avión";
+    private final String seleccionTanque = "Tanque"; 
+    private int indice;
+    private String[][] jugadorSeleccionado;
+    private String verJugador;    
     private String arma;
+    private final int vidaInicial = 50;
+    private final int eliminaciones = 0;
+    private final String ataqueInicial = "10";
+    private final String defensaInicial = "6";
     
     public IngresarVehiculos() {
         initComponents();
         listadoJugador = (ArrayList<Jugador>) IngresarJugador.listaJugador.clone();
         mostrarTabla();
         this.setLocationRelativeTo(null);
+        jLabel3.setText("1");
     }
 
     public String[][] mostrarTabla(){
@@ -82,9 +86,13 @@ public class IngresarVehiculos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "CAMPOS VACIOS, POR FAVOR INGRESE TODOS LOS DATOS");            
         }else{
             arma = (String)armaNueva.getSelectedItem();
-            Vehiculo nuevoVehiculo = new Vehiculo(nombreVehiculo.getText(),tipoVehiculo.getText(),arma,verPlayer.getText());
+            int noIdentificador = listaVehiculo.size()+1;
+            String identificador = Integer.toString(noIdentificador);
+            Vehiculo nuevoVehiculo = new Vehiculo(nombreVehiculo.getText(),tipoVehiculo.getText(),arma,verPlayer.getText(),identificador,vidaInicial,ataqueInicial,defensaInicial,0,0,eliminaciones);
             listaVehiculo.add(nuevoVehiculo);
-            JOptionPane.showMessageDialog(null, "VEHÍCULO CREADO CON ÉXITO");  
+            JOptionPane.showMessageDialog(null, "VEHÍCULO CREADO CON ÉXITO");
+            noIdentificador++;
+            jLabel3.setText(identificador);
             nombreVehiculo.setText(null);
             tipoVehiculo.setText(null);
             verPlayer.setText(null);
@@ -121,6 +129,7 @@ public class IngresarVehiculos extends javax.swing.JFrame {
         infoJugadr = new javax.swing.JLabel();
         panelVerPlayer = new javax.swing.JPanel();
         verPlayer = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         fondo = new javax.swing.JLabel();
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
@@ -137,6 +146,7 @@ public class IngresarVehiculos extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTable2);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         titulo.setBackground(new java.awt.Color(255, 255, 255));
@@ -170,8 +180,8 @@ public class IngresarVehiculos extends javax.swing.JFrame {
         panelTipoLayout.setHorizontalGroup(
             panelTipoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTipoLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(tipoVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addComponent(tipoVehiculo, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
         );
         panelTipoLayout.setVerticalGroup(
             panelTipoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -302,6 +312,9 @@ public class IngresarVehiculos extends javax.swing.JFrame {
 
         getContentPane().add(panelVerPlayer, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 360, 370, 40));
 
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 450, 80, 40));
+
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenesFondo/verde.jpg"))); // NOI18N
         getContentPane().add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(-30, 0, 1060, 540));
 
@@ -378,6 +391,7 @@ public class IngresarVehiculos extends javax.swing.JFrame {
     private javax.swing.JLabel infoTipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;

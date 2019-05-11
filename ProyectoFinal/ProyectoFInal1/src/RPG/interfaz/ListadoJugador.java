@@ -3,12 +3,15 @@ package RPG.interfaz;
 
 import RPG.jugador.Jugador;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 
 public class ListadoJugador extends javax.swing.JFrame {
 
     public static ArrayList<Jugador> listaJugador =  new ArrayList<Jugador>();
-    public static String dato;
+    public static String nombre;
+    public static int nivel;
+    public int experiencia;
+    public int dinero;
+    public static String identificador;
     
     public ListadoJugador() {
         initComponents();
@@ -32,8 +35,12 @@ public class ListadoJugador extends javax.swing.JFrame {
     public String obtenerJugador(){
         int fila = this.tablaJugador.getSelectedRow();
         int columna = this.tablaJugador.getSelectedColumn();
-        dato = String.valueOf(this.tablaJugador.getValueAt(fila,columna));
-        return dato;
+        nombre = String.valueOf(this.tablaJugador.getValueAt(fila,columna));
+        nivel = listaJugador.get(fila).getNivel();
+        experiencia = listaJugador.get(fila).getExperiencia();
+        dinero = listaJugador.get(fila).getDinero();
+        identificador = listaJugador.get(fila).getIdentificador();
+        return nombre;
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -48,6 +55,7 @@ public class ListadoJugador extends javax.swing.JFrame {
         fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         dibujo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenesFondo/cartel.jpg"))); // NOI18N
@@ -112,19 +120,17 @@ public class ListadoJugador extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed
-        SeleccionListado selecListado = new SeleccionListado();
-        selecListado.setVisible(true);
+        Inicio inicio = new Inicio();
+        inicio.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_salirActionPerformed
 
     private void tablaJugadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaJugadorMouseClicked
-        //JOptionPane.showMessageDialog(null, "FUNCIONA EL EVENTO");
         obtenerJugador();
-        verDato.setText(dato);
+        verDato.setText(nombre);
         ListadoVehiculo vehiculo = new ListadoVehiculo();
         vehiculo.setVisible(true);
-        this.setVisible(false);
-        
+        this.setVisible(false);       
     }//GEN-LAST:event_tablaJugadorMouseClicked
 
     public static void main(String args[]) {

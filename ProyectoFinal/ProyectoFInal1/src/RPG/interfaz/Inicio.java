@@ -25,6 +25,7 @@ public class Inicio extends javax.swing.JFrame {
         dibujo2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         titulo.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 48)); // NOI18N

@@ -1,13 +1,18 @@
 
 package RPG.interfaz;
 
+import RPG.enemigos.Enemigo;
 import javax.swing.JOptionPane;
 
 public class IniciarJuego extends javax.swing.JFrame {
 
     public static int fila,columna;
+    public static Enemigo[] enemigo = new Enemigo[3]; 
     
     public IniciarJuego() {
+        enemigo[0] = new Enemigo("TITÁN",75,"15",0,0);
+        enemigo[1] = new Enemigo("KONG",75,"15",0,0);
+        enemigo[2] = new Enemigo("DESTINY",75,"15",0,0);
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -38,9 +43,11 @@ public class IniciarJuego extends javax.swing.JFrame {
         titulo = new javax.swing.JLabel();
         ingresarDimensiones = new javax.swing.JComboBox<>();
         empezar = new javax.swing.JButton();
+        cancelar = new javax.swing.JButton();
         fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         titulo.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 18)); // NOI18N
@@ -63,7 +70,15 @@ public class IniciarJuego extends javax.swing.JFrame {
                 empezarActionPerformed(evt);
             }
         });
-        getContentPane().add(empezar, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 150, 30));
+        getContentPane().add(empezar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 150, 30));
+
+        cancelar.setText("CANCELAR");
+        cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(cancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(221, 130, 160, 30));
 
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenesFondo/verde.jpg"))); // NOI18N
         getContentPane().add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 190));
@@ -84,6 +99,12 @@ public class IniciarJuego extends javax.swing.JFrame {
             this.setVisible(false);
         }
     }//GEN-LAST:event_empezarActionPerformed
+
+    private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
+       Inicio inicio = new Inicio();
+       inicio.setVisible(true);
+       this.setVisible(false);
+    }//GEN-LAST:event_cancelarActionPerformed
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -117,6 +138,7 @@ public class IniciarJuego extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cancelar;
     private javax.swing.JButton empezar;
     private javax.swing.JLabel fondo;
     private javax.swing.JComboBox<String> ingresarDimensiones;
