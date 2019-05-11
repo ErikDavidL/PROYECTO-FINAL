@@ -9,11 +9,12 @@ import javax.swing.JOptionPane;
 
 public class IconoEnemigo {
    
+    //variables para implementar el icono de los enemigos
     ImageIcon imagen;
     ImageIcon enemigo;
     int ancho, alto;
     public static int codigoEnemigo;
-    
+    //metod para ingresar la dimension y el icono dependiendo del terreno
     public Icon insertarIcono(int criterioDimension,String terreno){
         switch(criterioDimension){
             case 4:
@@ -34,7 +35,7 @@ public class IconoEnemigo {
         }
         return enemigo;
     }
-    
+    //metodo para seleccionar el terreno y el icono
     public Icon seleccTerreno(String tipo){
         if(tipo.equals("llanura")){
             enemigoLlanura();      
@@ -47,7 +48,7 @@ public class IconoEnemigo {
         }
         return enemigo;
     }
-    
+    //metodos para insertar la imagen en base al tipo de terreno
     public Icon enemigoLake(){   
         imagen = new ImageIcon(getClass().getResource("/imagenesVehiculos/enemigoLake.jpg"));
         enemigo = new ImageIcon(imagen.getImage().getScaledInstance(ancho, alto, Image.SCALE_DEFAULT));

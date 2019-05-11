@@ -8,12 +8,14 @@ import javax.swing.JOptionPane;
 
 public class IconoAvion {
     
+    //variables para implementar el icono del avion
     ImageIcon imagen;
     ImageIcon avion;
     int ancho, alto;
     public static int reductorContador;
     public static Boolean yaIngresado;
     
+    //metod para ingresar la dimension y el icono dependiendo del terreno
     public Icon insertarIcono(int criterioDimension,String terreno){
         switch(criterioDimension){
             case 4:
@@ -34,7 +36,7 @@ public class IconoAvion {
         }
         return avion;
     }
-    
+    //metodo para seleccionar el terreno y el icono
     public Icon seleccTerreno(String tipo){
         if(tipo.equals("llanura")){
             avionLlanura();
@@ -54,7 +56,7 @@ public class IconoAvion {
         }
         return avion;
     }
-    
+    //metodos para insertar la imagen en base al tipo de terreno
     public Icon avionLake(){   
         imagen = new ImageIcon(getClass().getResource("/imagenesVehiculos/avionLake.jpg"));
         avion = new ImageIcon(imagen.getImage().getScaledInstance(ancho, alto, Image.SCALE_DEFAULT));

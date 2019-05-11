@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 
 public class ArmasTienda extends javax.swing.JFrame {
-
+    //variables para generar el listado y seleccion
     public static ArrayList<Arma> listadoArmas = new ArrayList<Arma>();
     private int numeroArma;
     String[][] listadoBusqueda,listadoExtra;
@@ -21,7 +21,7 @@ public class ArmasTienda extends javax.swing.JFrame {
         listadoArmas = (ArrayList<Arma>) IngresarArma.listaArma.clone();
         mostrarTabla();
     }
-      
+    //metodo para mostrar la tabla de armas
     public String[][] mostrarTabla(){
         String listado[][] = new String[listadoArmas.size()][6];
         int contador = 1;
@@ -45,7 +45,7 @@ public class ArmasTienda extends javax.swing.JFrame {
         listadoBusqueda = listado;
         return listadoBusqueda;
     }
-    
+    //errro por si no ingresa un valor correcto
     public void errorCompra(){
         
         if(Enteros.isNumeric(ingresarNumero.getText())){
@@ -63,7 +63,7 @@ public class ArmasTienda extends javax.swing.JFrame {
             ingresarNumero.setText(null);
         }  
     }
-    
+    //mostrar la arma que se quiere comprar
     public void mostrarArma(){
         listadoExtra = new String[1][6];
         listadoExtra[0][0] = listadoBusqueda[numeroArma][1];

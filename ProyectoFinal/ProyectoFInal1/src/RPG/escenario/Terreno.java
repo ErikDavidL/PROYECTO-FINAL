@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 
 public class Terreno {
 
+    //variables para implementar el icono del terreno
     ImageIcon imagen;
     ImageIcon imagenTerreno;
     int aleatorio;
@@ -41,6 +42,7 @@ public class Terreno {
         }
         return imagenTerreno;
     }
+    //metod para ingresar la dimension y el icono del terreno
     public Icon insertarIcono(int valorDimension){
         switch(valorDimension){
             case 4:
@@ -61,6 +63,7 @@ public class Terreno {
         }
         return imagenTerreno;
     }
+    //metodo para reinsertar un terreno
     public Icon reinsertarIcono(int valorDimension,String criterio){
         switch(valorDimension){
             case 4:
@@ -81,6 +84,7 @@ public class Terreno {
         }
         return imagenTerreno;
     }
+    //metodo para insertar el tipo de terreno
     public Icon insertarEscenario(String criterio){  
         if(criterio.equals("llanura")){
             llanura();
@@ -93,6 +97,7 @@ public class Terreno {
         }
         return imagenTerreno;
     }
+    //metodos para insertar la imagen en base al tipo de terreno
     public Icon llanura(){
         imagen = new ImageIcon(getClass().getResource("/imagenesTerreno/llanura.jpg"));
         imagenTerreno = new ImageIcon(imagen.getImage().getScaledInstance(ancho, alto, Image.SCALE_DEFAULT));

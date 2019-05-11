@@ -8,12 +8,13 @@ import javax.swing.JOptionPane;
 
 public class IconoTanque {
     
+    //variables para implementar el icono del tanque
     ImageIcon imagen;
     ImageIcon tanque;
     int ancho, alto;
     public static int reductorContador;
     public static Boolean yaIngresado;
-    
+    //metod para ingresar la dimension y el icono dependiendo del terreno
     public Icon insertarIcono(int criterioDimension,String terreno){
         switch(criterioDimension){
             case 4:
@@ -34,7 +35,7 @@ public class IconoTanque {
         }
         return tanque;
     }
-    
+    //metodo para seleccionar el terreno y el icono
     public Icon seleccTerreno(String tipo){
         if(tipo.equals("llanura")){
             tanqueLlanura();
@@ -54,7 +55,7 @@ public class IconoTanque {
         }
         return tanque;
     }
-    
+    //metodos para insertar la imagen en base al tipo de terreno
     public Icon lake(){   
         imagen = new ImageIcon(getClass().getResource("/imagenesTerreno/lake.jpg"));
         tanque = new ImageIcon(imagen.getImage().getScaledInstance(ancho, alto, Image.SCALE_DEFAULT));

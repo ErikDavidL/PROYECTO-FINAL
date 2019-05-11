@@ -2,7 +2,9 @@
 package RPG.interfaz;
 
 import RPG.jugador.Jugador;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -14,6 +16,8 @@ public class IngresarJugador extends javax.swing.JFrame {
     private final int experiencia = 0;
     private final int dinero = 100;
     private String identificador;
+    FileOutputStream fichero = null;
+    
     public IngresarJugador() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -86,6 +90,21 @@ public class IngresarJugador extends javax.swing.JFrame {
         listaJugador.add(jugador);
         JOptionPane.showMessageDialog(null, "JUGADOR CREADO CON ÉXITO");
         nombreJugador.setText(null);
+        try {
+            fichero = new FileOutputStream("jugadores.txt");
+            ObjectOutputStream tuberia = new ObjectOutputStream(fichero);
+            tuberia.writeObject(jugador);
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }catch (IOException ex) {
+            ex.printStackTrace();
+        }finally{
+            try{
+                fichero.close();
+            } catch(IOException ex){
+                ex.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_guardarActionPerformed
 
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed

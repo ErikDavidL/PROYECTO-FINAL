@@ -1,7 +1,9 @@
 
 package RPG.jugador;
 
-public class Jugador {
+import java.io.Serializable;
+
+public class Jugador implements Serializable{
     
    private String nombre;
    private int nivel;

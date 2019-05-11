@@ -24,6 +24,7 @@ import javax.swing.border.LineBorder;
 
 public class Escenario extends javax.swing.JFrame {
 
+    //variables utilizadas para el funcionamiento del escenario junto con la jugabilidad
     public static int recibirFila,recibirColumna;
     public static int[][] posiciones;
     public static String[][] codigoTerreno;
@@ -74,6 +75,7 @@ public class Escenario extends javax.swing.JFrame {
         mostrarTipo.setText("vacio");
         valoresIniciales();
     }
+    //metodo que ingresa los valores iniciales del escenario, como tablas, iconos, etc
     public void valoresIniciales(){    
         verJugador.setText(ListadoJugador.nombre);
         verNivel.setText(String.valueOf(ListadoJugador.nivel));
@@ -88,6 +90,7 @@ public class Escenario extends javax.swing.JFrame {
         mostrarEnemigos();
         verSeleccionVehiculo();
     }
+    //metodos para insertar los iconos de los enemigos y guardar su ubicacion
     public void enemigoUno(){
         int fila = jugabilidad.randomFilas(recibirFila);
         int columna = jugabilidad.randomColumnas(recibirColumna);
@@ -120,21 +123,25 @@ public class Escenario extends javax.swing.JFrame {
             Jugabilidad.enemigos[2].setPosFila(fila);
         }
     }
+    //metodo para mostrar la tabla de vida
     public void mostrarVida(){
         tablaVida.setModel(new javax.swing.table.DefaultTableModel(jugabilidad.mostrarVidaJugador(), new String [] {
         "VEHICULO", "TIPO VEHICULO", "PUNTOS DE VIDA (HP)"
         }));
     }
+    //metodo para mostrar la tabla de ataque
     public void mostrarAtaque(){
         tablaAtaqueDefensa.setModel(new javax.swing.table.DefaultTableModel(jugabilidad.mostrarAtaqueDefensaJugador(), new String [] {
         "VEHICULO", "PUNTOS ATAQUE","PUNTOS DEFENSA"
         }));
     }
+    //metodo para mostrar la tabla de enemigos
     public void mostrarEnemigos(){
         tablaEnemigo.setModel(new javax.swing.table.DefaultTableModel(jugabilidad.mostrarEnemigos(), new String [] {
         "ENEMIGO", "ATAQUE","VIDA","FILA","COLUMNA"
         }));
     }
+    //metodo para mostrar la tabla de posiciones
     public void mostrarPosiciones(){
         tablaPos.setModel(new javax.swing.table.DefaultTableModel(jugabilidad.mostrarPosicion(), new String [] {
         "VEHICULO", "FILA", "COLUMNA"
@@ -143,6 +150,7 @@ public class Escenario extends javax.swing.JFrame {
     public void verSeleccionVehiculo(){
         listadoCambio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- SIN VEHICULO SELECCIONADO-",Jugabilidad.vehiculoUno.getNombre(),Jugabilidad.vehiculoDos.getNombre(),Jugabilidad.vehiculoTres.getNombre(), }));
     }
+    //metodo para gener el escenario y para colocar lso vehiculos
     public void generarEscenario(int entradaFila,int entradaColumna){
         filas = entradaFila;
         columnas = entradaColumna;
@@ -173,6 +181,7 @@ public class Escenario extends javax.swing.JFrame {
             }
         }
     } 
+    //evento al dar click
     private class ImagenVehiculo implements ActionListener{
         //metodo para realizar una accion al momento de hacer click
         @Override
