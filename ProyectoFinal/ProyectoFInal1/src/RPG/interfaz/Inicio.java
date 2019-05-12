@@ -69,6 +69,11 @@ public class Inicio extends javax.swing.JFrame {
         estadisticas.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 14)); // NOI18N
         estadisticas.setForeground(new java.awt.Color(0, 0, 0));
         estadisticas.setText("ESTADÍSTICAS");
+        estadisticas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                estadisticasActionPerformed(evt);
+            }
+        });
         getContentPane().add(estadisticas, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 420, 150, 50));
 
         salir.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 14)); // NOI18N
@@ -116,6 +121,12 @@ public class Inicio extends javax.swing.JFrame {
         juego.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_iniciarJuegoActionPerformed
+
+    private void estadisticasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadisticasActionPerformed
+        Prueba jugadores = new Prueba();
+        jugadores.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_estadisticasActionPerformed
 
 
     public static void main(String args[]) {

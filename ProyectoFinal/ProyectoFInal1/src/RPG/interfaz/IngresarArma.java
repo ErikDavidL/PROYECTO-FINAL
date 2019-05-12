@@ -1,6 +1,7 @@
 
 package RPG.interfaz;
 
+import RPG.archivos.ArchivoArma;
 import RPG.armas.Arma;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -13,12 +14,14 @@ public class IngresarArma extends javax.swing.JFrame {
     private final int precioArma = 100;
     private String mostrarPrecio = "";
     private String valorAtaque, valorPunteria,categoria;
+    ArchivoArma archivoArma = new ArchivoArma();
     
     public IngresarArma() {
         initComponents();
         this.setLocationRelativeTo(null);
         costoAtaque.setText("50");
-        costoPunteria.setText("65");        
+        costoPunteria.setText("65");       
+        listaArma = archivoArma.leerArchivo();
     }
     
     public void mostrarCostoAtaque(){
@@ -298,7 +301,7 @@ public class IngresarArma extends javax.swing.JFrame {
                
         Arma arma = new Arma(ingresarNombre.getText(),categoria,valorAtaque,valorPunteria, mostrarPrecio);
         listaArma.add(arma);
-        
+        archivoArma.guardarArchivo(listaArma);
         JOptionPane.showMessageDialog(null, "ARMA CREADA CON ÉXITO");
         ingresarNombre.setText(null);
         mostrarTotal.setText(null);

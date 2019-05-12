@@ -31,38 +31,38 @@ public class Verificador {
         return perdiojuego;
     }
     public void victoriaPartida(){
-        listaJugador = (ArrayList<Jugador>) IngresarJugador.listaJugador.clone();
-        busquedaJugador(ListadoJugador.identificador);  
+        //listaJugador = (ArrayList<Jugador>) IngresarJugador.listaJugador.clone();
+        //busquedaJugador(ListadoJugador.identificador);  
         JOptionPane.showMessageDialog(null, "El JUGADOR "+ListadoJugador.nombre+"\n HA GANADO EXPERIENCIA +1000 \n DINERO +100");
         
     }
     public void busquedaJugador(String identificador){
         int i=0;
-        int nombreEncontrado = 0;
+        int identificadorEncontrado = 0;
         int modificar;
         int experiencia;
         int nivel;
         while(i < listaJugador.size() && busqueda == false){
-            if(listaJugador.get(i).getIdentificador() == identificador){
+            //if(listaJugador.get(i).getIdentificador() == identificador){
                 busqueda = true;
-                nombreEncontrado = i;
+                identificadorEncontrado = i;
             }
             i++;
-        }
+        //}
         if(busqueda == false){
             
         }
         else{
-            modificar = listaJugador.get(nombreEncontrado).getDinero()+100;
-            experiencia = listaJugador.get(nombreEncontrado).getExperiencia()+1000;
-            listaJugador.get(nombreEncontrado).setExperiencia(experiencia);
-            listaJugador.get(nombreEncontrado).setDinero(modificar);
+            modificar = listaJugador.get(identificadorEncontrado).getDinero()+100;
+            experiencia = listaJugador.get(identificadorEncontrado).getExperiencia()+1000;
+            listaJugador.get(identificadorEncontrado).setExperiencia(experiencia);
+            listaJugador.get(identificadorEncontrado).setDinero(modificar);
             if(experiencia <=2000){
                 nivel = 1;
             }else{
-                nivel = listaJugador.get(nombreEncontrado).getNivel()+1;
+                nivel = listaJugador.get(identificadorEncontrado).getNivel()+1;
             }
-            listaJugador.get(nombreEncontrado).setNivel(nivel);
+            listaJugador.get(identificadorEncontrado).setNivel(nivel);
             
         }
     }

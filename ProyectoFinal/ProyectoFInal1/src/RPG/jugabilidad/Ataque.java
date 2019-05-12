@@ -166,8 +166,7 @@ public class Ataque {
         if(fila == Jugabilidad.enemigos[0].getPosFila() && columna == Jugabilidad.enemigos[0].getPosColumna()){
             int vida = Jugabilidad.enemigos[0].getVida() - ataque;
             if(vida <= 0){
-                JOptionPane.showMessageDialog(null, "ENEMIGO MUERTO");
-                
+                JOptionPane.showMessageDialog(null, "ENEMIGO MUERTO");                
                 vida = 0;
             }
             Jugabilidad.enemigos[0].setVida(vida);
@@ -263,7 +262,7 @@ public class Ataque {
         }  
         if(busqueda == true){
             JOptionPane.showMessageDialog(null, "EL ENEMIGO TE HA HECHO DAÑO");
-            reducirVidaVehiculo(verificarFila,verificarColumna,16);
+            reducirVidaVehiculo(verificarFila,verificarColumna,17);
         }
         if(busqueda == false){
             JOptionPane.showMessageDialog(null, "EL ENEMIGO FALLÓ");
@@ -286,7 +285,7 @@ public class Ataque {
         }
         if(busqueda == true){
             JOptionPane.showMessageDialog(null, "EL ENEMIGO TE HA HECHO DAÑO");
-            reducirVidaVehiculo(verificarFila,verificarColumna,16);
+            reducirVidaVehiculo(verificarFila,verificarColumna,17);
         }
         if(busqueda == false){
             JOptionPane.showMessageDialog(null, "EL ENEMIGO FALLÓ");
@@ -309,7 +308,7 @@ public class Ataque {
         }  
         if(busqueda == true){
             JOptionPane.showMessageDialog(null, "EL ENEMIGO TE HA HECHO DAÑO");
-            reducirVidaVehiculo(verificarFila,verificarColumna,16);
+            reducirVidaVehiculo(verificarFila,verificarColumna,17);
         }
         if(busqueda == false){
             JOptionPane.showMessageDialog(null, "EL ENEMIGO FALLÓ");
@@ -332,7 +331,7 @@ public class Ataque {
         }   
         if(busqueda == true){
             JOptionPane.showMessageDialog(null, "EL ENEMIGO TE HA HECHO DAÑO");
-            reducirVidaVehiculo(verificarFila,verificarColumna,16);
+            reducirVidaVehiculo(verificarFila,verificarColumna,17);
         }
         if(busqueda == false){
             JOptionPane.showMessageDialog(null, "EL ENEMIGO FALLÓ");

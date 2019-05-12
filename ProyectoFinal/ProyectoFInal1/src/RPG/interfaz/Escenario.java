@@ -974,21 +974,24 @@ public class Escenario extends javax.swing.JFrame {
                     if(Jugabilidad.vehiculoTres.getVida() <= 0){
                         JOptionPane.showMessageDialog(null, "VEHICULO MUERTO, NO PUEDE ATACAR");
                     }else{
-                        ataque.atacar(porcentajeAtaque.getText(),seleccionDireccion, posiciones, recibirColumna, recibirFila,verSeleccVehiculo.getText(),Jugabilidad.vehiculoTres.getAtaque());
+                        String cadena = String.valueOf(Jugabilidad.vehiculoTres.getAtaque());
+                        ataque.atacar(porcentajeAtaque.getText(),seleccionDireccion, posiciones, recibirColumna, recibirFila,verSeleccVehiculo.getText(),cadena);
                     }
                 }
                 if(verSeleccVehiculo.getText().equals(Jugabilidad.vehiculoDos.getNombre())){
                     if(Jugabilidad.vehiculoDos.getVida() <= 0){
                         JOptionPane.showMessageDialog(null, "VEHICULO MUERTO, NO PUEDE ATACAR");
                     }else{
-                        ataque.atacar(porcentajeAtaque.getText(),seleccionDireccion, posiciones, recibirColumna, recibirFila,verSeleccVehiculo.getText(),Jugabilidad.vehiculoDos.getAtaque());
+                        String cadena = String.valueOf(Jugabilidad.vehiculoDos.getAtaque());
+                        ataque.atacar(porcentajeAtaque.getText(),seleccionDireccion, posiciones, recibirColumna, recibirFila,verSeleccVehiculo.getText(),cadena);
                     }
                 }
                 if(verSeleccVehiculo.getText().equals(Jugabilidad.vehiculoUno.getNombre())){
                     if(Jugabilidad.vehiculoUno.getVida() <= 0){
                         JOptionPane.showMessageDialog(null, "VEHICULO MUERTO, NO PUEDE ATACAR");
                     }else{
-                        ataque.atacar(porcentajeAtaque.getText(),seleccionDireccion, posiciones, recibirColumna, recibirFila,verSeleccVehiculo.getText(),Jugabilidad.vehiculoUno.getAtaque());
+                        String cadena = String.valueOf(Jugabilidad.vehiculoUno.getAtaque());
+                        ataque.atacar(porcentajeAtaque.getText(),seleccionDireccion, posiciones, recibirColumna, recibirFila,verSeleccVehiculo.getText(),cadena);
                     }    
                 }
                 ataque.ataqueEnemigo(recibirColumna, recibirFila, posiciones);

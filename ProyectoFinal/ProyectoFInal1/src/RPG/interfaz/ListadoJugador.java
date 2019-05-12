@@ -1,22 +1,24 @@
 
 package RPG.interfaz;
 
+import RPG.archivos.ArchivoJugador;
 import RPG.jugador.Jugador;
 import java.util.ArrayList;
 
 public class ListadoJugador extends javax.swing.JFrame {
 
-    public static ArrayList<Jugador> listaJugador =  new ArrayList<Jugador>();
+    private ArchivoJugador archivoJugador = new ArchivoJugador();
+    private ArrayList<Jugador> listaJugador =  new ArrayList<Jugador>();
     public static String nombre;
     public static int nivel;
     public int experiencia;
     public int dinero;
-    public static String identificador;
+    public static int identificador;
     
     public ListadoJugador() {
         initComponents();
         this.setLocationRelativeTo(null);
-        listaJugador = (ArrayList<Jugador>) IngresarJugador.listaJugador.clone();
+        listaJugador = archivoJugador.leerArchivo();
         mostrarTabla();
     }
     
@@ -25,12 +27,7 @@ public class ListadoJugador extends javax.swing.JFrame {
         for (int i = 0; i < listaJugador.size(); i++) {
             listado[i][0]=listaJugador.get(i).getNombre();
         }
-        tablaJugador.setModel(new javax.swing.table.DefaultTableModel(
-            listado,
-            new String [] {
-                "JUGADOR"
-            }
-        ));
+        tablaJugador.setModel(new javax.swing.table.DefaultTableModel(listado,new String [] {"JUGADOR"}));
     }    
     public String obtenerJugador(){
         int fila = this.tablaJugador.getSelectedRow();

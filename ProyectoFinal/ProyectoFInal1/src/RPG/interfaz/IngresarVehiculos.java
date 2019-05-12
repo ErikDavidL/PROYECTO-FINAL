@@ -1,6 +1,8 @@
 
 package RPG.interfaz;
 
+import RPG.archivos.ArchivoJugador;
+import RPG.archivos.ArchivoVehiculo;
 import RPG.excepciones.Enteros;
 import RPG.jugador.Jugador;
 import RPG.vehiculos.Vehiculo;
@@ -12,8 +14,10 @@ import javax.swing.JOptionPane;
 
 public class IngresarVehiculos extends javax.swing.JFrame {
     
-    public static ArrayList<Vehiculo> listaVehiculo = new ArrayList<Vehiculo>();
-    public static ArrayList<Jugador> listadoJugador =  new ArrayList<Jugador>();
+    ArchivoVehiculo archivoVehiculo = new ArchivoVehiculo();
+    ArchivoJugador archivoJugador = new ArchivoJugador();
+    private ArrayList<Vehiculo> listaVehiculo = new ArrayList<>();
+    private ArrayList<Jugador> listadoJugador =  new ArrayList<>();
     private final String seleccionAvion = "Avión";
     private final String seleccionTanque = "Tanque"; 
     private int indice;
@@ -22,13 +26,15 @@ public class IngresarVehiculos extends javax.swing.JFrame {
     private String arma;
     private final int vidaInicial = 50;
     private final int eliminaciones = 0;
-    private final String ataqueInicial = "10";
-    private final String defensaInicial = "6";
+    private final int ataqueInicial = 10;
+    private final int defensaInicial = 6;
+    
     
     public IngresarVehiculos() {
         initComponents();
-        listadoJugador = (ArrayList<Jugador>) IngresarJugador.listaJugador.clone();
+        listadoJugador = archivoJugador.leerArchivo();
         mostrarTabla();
+        listaVehiculo = archivoVehiculo.leerArchivo();
         this.setLocationRelativeTo(null);
         jLabel3.setText("1");
     }
@@ -88,8 +94,9 @@ public class IngresarVehiculos extends javax.swing.JFrame {
             arma = (String)armaNueva.getSelectedItem();
             int noIdentificador = listaVehiculo.size()+1;
             String identificador = Integer.toString(noIdentificador);
-            Vehiculo nuevoVehiculo = new Vehiculo(nombreVehiculo.getText(),tipoVehiculo.getText(),arma,verPlayer.getText(),identificador,vidaInicial,ataqueInicial,defensaInicial,0,0,eliminaciones);
+            Vehiculo nuevoVehiculo = new Vehiculo(nombreVehiculo.getText(),tipoVehiculo.getText(),arma,verPlayer.getText(),noIdentificador,vidaInicial,ataqueInicial,defensaInicial,0,0,eliminaciones);
             listaVehiculo.add(nuevoVehiculo);
+            archivoVehiculo.guardarArchivo(listaVehiculo);
             JOptionPane.showMessageDialog(null, "VEHÍCULO CREADO CON ÉXITO");
             noIdentificador++;
             jLabel3.setText(identificador);

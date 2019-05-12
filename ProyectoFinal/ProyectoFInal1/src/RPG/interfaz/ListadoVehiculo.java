@@ -1,16 +1,17 @@
 
 package RPG.interfaz;
 
+import RPG.archivos.ArchivoVehiculo;
 import RPG.vehiculos.Vehiculo;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class ListadoVehiculo extends javax.swing.JFrame {
 
-    public static ArrayList<Vehiculo> listadoVehiculos = new ArrayList<Vehiculo>();
-    public static ArrayList<Vehiculo> vehiculosJuego = new ArrayList<Vehiculo>();
-    private String dato,nombreComparado, nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,ataque,defensa;
-    private int vida,eliminaciones;
+    private ArchivoVehiculo archivoVehiculo = new ArchivoVehiculo();
+    private ArrayList<Vehiculo> listadoVehiculos = new ArrayList<Vehiculo>();
+    private String dato,nombreComparado, nombre, tipoVehiculo,armaIntegrada,creadorVehiculo;
+    private int vida,eliminaciones,ataque,defensa;
     private int contadorVehiculo = 0;
  
     String[] arregloTemporal = new String[3];
@@ -24,7 +25,7 @@ public class ListadoVehiculo extends javax.swing.JFrame {
     public ListadoVehiculo() {
         initComponents();
         this.setLocationRelativeTo(null);
-        listadoVehiculos = (ArrayList<Vehiculo>) IngresarVehiculos.listaVehiculo.clone();
+        listadoVehiculos = archivoVehiculo.leerArchivo();
         creadorVehiculo = ListadoJugador.nombre;
         mostrarListado(); 
         listadoNulo();
@@ -37,8 +38,9 @@ public class ListadoVehiculo extends javax.swing.JFrame {
     }
     public void mostrarListado(){
         String listado[][] = new String[listadoVehiculos.size()][5];
+        String cadena;
         for (int i = 0; i < listadoVehiculos.size(); i++) {
-            listado[i][0]=listadoVehiculos.get(i).getIdentificador();
+            listado[i][0]= cadena = String.valueOf(listadoVehiculos.get(i).getIdentificador());
             listado[i][1]=listadoVehiculos.get(i).getNombre();
             listado[i][2]=listadoVehiculos.get(i).getTipoVehiculo();
             listado[i][3]=listadoVehiculos.get(i).getArmaIntegrada();
@@ -71,19 +73,20 @@ public class ListadoVehiculo extends javax.swing.JFrame {
         tipoVehiculo = String.valueOf(this.tablaVehiculo.getValueAt(fila,2));
         armaIntegrada = String.valueOf(this.tablaVehiculo.getValueAt(fila,3)); 
         String comparador = String.valueOf(this.tablaVehiculo.getValueAt(fila,0));
+        int codigoComparador = Integer.parseInt(comparador);
         arregloTemporal[contadorVehiculo] = comparador;
         vida = listadoVehiculos.get(fila).getVida();
         ataque = listadoVehiculos.get(fila).getAtaque();
         defensa = listadoVehiculos.get(fila).getDefensa();
         eliminaciones = listadoVehiculos.get(fila).getVida();
         if(contador == 0){
-            vehiculoUno = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,comparador,vida,ataque,defensa,0,0,eliminaciones);
+            vehiculoUno = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,codigoComparador,vida,ataque,defensa,0,0,eliminaciones);
         }
         if(contador == 1){
-            vehiculoDos = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,comparador,vida,ataque,defensa,0,0,eliminaciones);
+            vehiculoDos = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,codigoComparador,vida,ataque,defensa,0,0,eliminaciones);
         }
         if(contador == 2){
-            vehiculoTres = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,comparador,vida,ataque,defensa,0,0,eliminaciones);
+            vehiculoTres = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,codigoComparador,vida,ataque,defensa,0,0,eliminaciones);
         }   
         
     }

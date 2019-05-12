@@ -1,28 +1,24 @@
 
 package RPG.interfaz;
 
+import RPG.archivos.ArchivoJugador;
 import RPG.jugador.Jugador;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class IngresarJugador extends javax.swing.JFrame {
 
-    public static ArrayList<Jugador> listaJugador = new ArrayList<Jugador>();
+    private ArrayList<Jugador> listaJugador = new ArrayList<>();
     private final int nivel = 1;
     private final int experiencia = 0;
     private final int dinero = 100;
-    private String identificador;
-    FileOutputStream fichero = null;
-    
+    ArchivoJugador archivoJugador = new ArchivoJugador();
+   
     public IngresarJugador() {
         initComponents();
         this.setLocationRelativeTo(null);
+        listaJugador = archivoJugador.leerArchivo();
     }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -85,26 +81,11 @@ public class IngresarJugador extends javax.swing.JFrame {
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
         int noIdentificador = listaJugador.size()+1;
-        identificador = Integer.toString(noIdentificador);
-        Jugador jugador = new Jugador(nombreJugador.getText(),nivel,experiencia,identificador,dinero);
+        Jugador jugador = new Jugador(nombreJugador.getText(),nivel,experiencia,noIdentificador,dinero);
         listaJugador.add(jugador);
+        archivoJugador.guardarArchivo(listaJugador);
         JOptionPane.showMessageDialog(null, "JUGADOR CREADO CON ÉXITO");
         nombreJugador.setText(null);
-        try {
-            fichero = new FileOutputStream("jugadores.txt");
-            ObjectOutputStream tuberia = new ObjectOutputStream(fichero);
-            tuberia.writeObject(jugador);
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        }catch (IOException ex) {
-            ex.printStackTrace();
-        }finally{
-            try{
-                fichero.close();
-            } catch(IOException ex){
-                ex.printStackTrace();
-            }
-        }
     }//GEN-LAST:event_guardarActionPerformed
 
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed

@@ -1,7 +1,9 @@
 
 package RPG.armas;
 
-public class Arma {
+import java.io.Serializable;
+
+public class Arma implements Serializable{
     //atributos del objeto arma 
     private String nombre;
     private String tipoArma;

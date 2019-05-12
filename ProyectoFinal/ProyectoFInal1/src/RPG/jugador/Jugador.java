@@ -8,7 +8,7 @@ public class Jugador implements Serializable{
    private String nombre;
    private int nivel;
    private int experiencia;
-   private String identificador;
+   private int identificador;
    private int dinero;
 
     public String getNombre() {
@@ -30,10 +30,10 @@ public class Jugador implements Serializable{
         this.experiencia = experiencia;
     }
 
-    public String getIdentificador() {
+    public int getIdentificador() {
         return identificador;
     }
-    public void setIdentificador(String identificador) {
+    public void setIdentificador(int identificador) {
         this.identificador = identificador;
     }
 
@@ -45,7 +45,7 @@ public class Jugador implements Serializable{
         this.dinero = dinero;
     }
     
-    public Jugador(String nombre,int nivel,int experiencia, String identificador,int dinero) {
+    public Jugador(String nombre,int nivel,int experiencia, int identificador,int dinero) {
         this.nombre = nombre;
         this.nivel = nivel;
         this.experiencia = experiencia;

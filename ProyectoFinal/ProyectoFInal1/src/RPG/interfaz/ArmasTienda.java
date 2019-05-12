@@ -1,6 +1,7 @@
 
 package RPG.interfaz;
 
+import RPG.archivos.ArchivoArma;
 import RPG.armas.Arma;
 import RPG.excepciones.Enteros;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import javax.swing.JOptionPane;
 
 public class ArmasTienda extends javax.swing.JFrame {
     //variables para generar el listado y seleccion
+    ArchivoArma archivoArma = new ArchivoArma();
     public static ArrayList<Arma> listadoArmas = new ArrayList<Arma>();
     private int numeroArma;
     String[][] listadoBusqueda,listadoExtra;
@@ -18,7 +20,7 @@ public class ArmasTienda extends javax.swing.JFrame {
     public ArmasTienda() {
         initComponents();
         this.setLocationRelativeTo(null);
-        listadoArmas = (ArrayList<Arma>) IngresarArma.listaArma.clone();
+        listadoArmas = archivoArma.leerArchivo();
         mostrarTabla();
     }
     //metodo para mostrar la tabla de armas

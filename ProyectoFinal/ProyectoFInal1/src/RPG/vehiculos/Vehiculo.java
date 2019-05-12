@@ -1,16 +1,18 @@
 
 package RPG.vehiculos;
 
-public class Vehiculo {
+import java.io.Serializable;
+
+public class Vehiculo implements Serializable{
 
     private String nombre;
     private String tipoVehiculo;
     private String armaIntegrada;
     private String creadorAuto;
-    private String identificador;
+    private int identificador;
     private int vida;
-    private String ataque;
-    private String defensa;
+    private int ataque;
+    private int defensa;
     private int posFila;
     private int posColumna;
     private int eliminaciones;
@@ -39,10 +41,10 @@ public class Vehiculo {
     public void setCreadorAuto(String creadorAuto) {
         this.creadorAuto = creadorAuto;
     }
-    public String getIdentificador() {
+    public int getIdentificador() {
         return identificador;
     }
-    public void setIdentificador(String identificador) {
+    public void setIdentificador(int identificador) {
         this.identificador = identificador;
     }
     public int getVida() {
@@ -51,16 +53,16 @@ public class Vehiculo {
     public void setVida(int vida) {
         this.vida = vida;
     }
-    public String getAtaque() {
+    public int getAtaque() {
         return ataque;
     }
-    public void setAtaque(String ataque) {
+    public void setAtaque(int ataque) {
         this.ataque = ataque;
     }
-    public String getDefensa() {
+    public int getDefensa() {
         return defensa;
     }
-    public void setDefensa(String defensa) {
+    public void setDefensa(int defensa) {
         this.defensa = defensa;
     }
     public int getPosFila() {
@@ -84,7 +86,7 @@ public class Vehiculo {
         this.eliminaciones = eliminaciones;
     }
     
-    public Vehiculo(String nombre, String tipoVehiculo, String armaIntegrada, String creadorAuto, String identificador,int vida,String ataque, String defensa,int posFila,int posColumna,int eliminaciones) {
+    public Vehiculo(String nombre, String tipoVehiculo, String armaIntegrada, String creadorAuto, int identificador,int vida,int ataque, int defensa,int posFila,int posColumna,int eliminaciones) {
         this.nombre = nombre;
         this.tipoVehiculo = tipoVehiculo;
         this.armaIntegrada = armaIntegrada;

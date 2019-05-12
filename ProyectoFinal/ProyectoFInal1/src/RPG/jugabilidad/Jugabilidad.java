@@ -68,35 +68,38 @@ public class Jugabilidad {
     }
     public String[][] mostrarAtaqueJugador(){
        String[][] ataqueVehiculos = new String[3][3];
+       String cadena;
        ataqueVehiculos[0][0] = vehiculoUno.getNombre();
        ataqueVehiculos[1][0] = vehiculoDos.getNombre();
        ataqueVehiculos[2][0] = vehiculoTres.getNombre();
-       ataqueVehiculos[0][1] = vehiculoUno.getAtaque();
-       ataqueVehiculos[1][1] = vehiculoDos.getAtaque();
-       ataqueVehiculos[2][1] = vehiculoTres.getAtaque();
+       ataqueVehiculos[0][1] = cadena = String.valueOf(vehiculoUno.getAtaque());
+       ataqueVehiculos[1][1] = cadena = String.valueOf(vehiculoDos.getAtaque());
+       ataqueVehiculos[2][1] = cadena = String.valueOf(vehiculoTres.getAtaque());
        return ataqueVehiculos;
     }
     public String[][] mostrarDefensaJugador(){
        String[][] defensaVehiculos = new String[3][3];
+       String cadena;
        defensaVehiculos[0][0] = vehiculoUno.getNombre();
        defensaVehiculos[1][0] = vehiculoDos.getNombre();
        defensaVehiculos[2][0] = vehiculoTres.getNombre();
-       defensaVehiculos[0][1] = vehiculoUno.getDefensa();
-       defensaVehiculos[1][1] = vehiculoDos.getDefensa();
-       defensaVehiculos[2][1] = vehiculoTres.getDefensa();
+       defensaVehiculos[0][1] = cadena = String.valueOf(vehiculoUno.getDefensa());
+       defensaVehiculos[1][1] = cadena = String.valueOf(vehiculoDos.getDefensa());
+       defensaVehiculos[2][1] = cadena = String.valueOf(vehiculoTres.getDefensa());
        return defensaVehiculos;
     }
     public String[][] mostrarAtaqueDefensaJugador(){
        String[][] ataqueDefensaVehiculos = new String[3][4];
+       String cadena;
        ataqueDefensaVehiculos[0][0] = vehiculoUno.getNombre();
        ataqueDefensaVehiculos[1][0] = vehiculoDos.getNombre();
        ataqueDefensaVehiculos[2][0] = vehiculoTres.getNombre();
-       ataqueDefensaVehiculos[0][1] = vehiculoUno.getAtaque();
-       ataqueDefensaVehiculos[1][1] = vehiculoDos.getAtaque();
-       ataqueDefensaVehiculos[2][1] = vehiculoTres.getAtaque();
-       ataqueDefensaVehiculos[0][2] = vehiculoUno.getDefensa();
-       ataqueDefensaVehiculos[1][2] = vehiculoDos.getDefensa();
-       ataqueDefensaVehiculos[2][2] = vehiculoTres.getDefensa();
+       ataqueDefensaVehiculos[0][1] = cadena = String.valueOf(vehiculoUno.getAtaque());
+       ataqueDefensaVehiculos[1][1] = cadena = String.valueOf(vehiculoDos.getAtaque());
+       ataqueDefensaVehiculos[2][1] = cadena = String.valueOf(vehiculoTres.getAtaque());
+       ataqueDefensaVehiculos[0][2] = cadena = String.valueOf(vehiculoUno.getDefensa());
+       ataqueDefensaVehiculos[1][2] = cadena = String.valueOf(vehiculoDos.getDefensa());
+       ataqueDefensaVehiculos[2][2] = cadena = String.valueOf(vehiculoTres.getDefensa());
        return ataqueDefensaVehiculos;
     }
     public int moverse(String cantidadCasillas,String nombre,String direccion,int filasEscenario,int columnasEscenario){
