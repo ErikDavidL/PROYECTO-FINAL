@@ -84,15 +84,15 @@ public class ListadoVehiculo extends javax.swing.JFrame {
         int codigoCreador = listadoVehiculos.get(fila).getCodigoCreador();
             
         if(contador == 1){
-            vehiculoDos = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,codigoComparador,vida,ataque,defensa,0,0,eliminaciones,codigoCreador);
+            
             vehiculosPartida[1] = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,codigoComparador,vida,ataque,defensa,0,0,eliminaciones,codigoCreador);
         }
         if(contador == 2){
-            vehiculoTres = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,codigoComparador,vida,ataque,defensa,0,0,eliminaciones,codigoCreador);
+            
             vehiculosPartida[2] = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,codigoComparador,vida,ataque,defensa,0,0,eliminaciones,codigoCreador);
         } 
         if(contador == 0){
-            vehiculoUno = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,codigoComparador,vida,ataque,defensa,0,0,eliminaciones,codigoCreador);
+            
             vehiculosPartida[0] = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,codigoComparador,vida,ataque,defensa,0,0,eliminaciones,codigoCreador);
         }
         

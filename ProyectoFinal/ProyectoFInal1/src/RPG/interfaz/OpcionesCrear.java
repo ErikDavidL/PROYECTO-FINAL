@@ -17,7 +17,6 @@ public class OpcionesCrear extends javax.swing.JFrame {
         crearJugador = new javax.swing.JButton();
         crearVehiculo = new javax.swing.JButton();
         crearArma = new javax.swing.JButton();
-        listados = new javax.swing.JButton();
         salir = new javax.swing.JButton();
         casco = new javax.swing.JLabel();
         fondo = new javax.swing.JLabel();
@@ -63,16 +62,6 @@ public class OpcionesCrear extends javax.swing.JFrame {
         });
         getContentPane().add(crearArma, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 240, 180, 50));
 
-        listados.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 14)); // NOI18N
-        listados.setForeground(new java.awt.Color(0, 0, 0));
-        listados.setText("LISTADOS");
-        listados.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                listadosActionPerformed(evt);
-            }
-        });
-        getContentPane().add(listados, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 320, 180, 50));
-
         salir.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 14)); // NOI18N
         salir.setForeground(new java.awt.Color(0, 0, 0));
         salir.setText("SALIR");
@@ -81,13 +70,13 @@ public class OpcionesCrear extends javax.swing.JFrame {
                 salirActionPerformed(evt);
             }
         });
-        getContentPane().add(salir, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 400, 180, 50));
+        getContentPane().add(salir, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 340, 180, 50));
 
         casco.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenesFondo/casco.png"))); // NOI18N
         getContentPane().add(casco, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 50, 370, -1));
 
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenesFondo/verde.jpg"))); // NOI18N
-        getContentPane().add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 360, 500));
+        getContentPane().add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 360, 430));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -115,12 +104,6 @@ public class OpcionesCrear extends javax.swing.JFrame {
         arma.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_crearArmaActionPerformed
-
-    private void listadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listadosActionPerformed
-        SeleccionListado verListados = new SeleccionListado();
-        verListados.setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_listadosActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -161,7 +144,6 @@ public class OpcionesCrear extends javax.swing.JFrame {
     private javax.swing.JButton crearVehiculo;
     private javax.swing.JLabel fondo;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton listados;
     private javax.swing.JButton salir;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables

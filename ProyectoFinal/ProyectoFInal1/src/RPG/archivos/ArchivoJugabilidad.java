@@ -66,4 +66,30 @@ public class ArchivoJugabilidad {
         }
         return vehiculo;
     }
+    
+    public void guardarMultiJugador(Jugador[] jugador){
+        try{
+            archivoVehiculos = new FileOutputStream("MultiJugadorPartida.dat");
+            objetoArchivo =  new ObjectOutputStream(archivoVehiculos);
+            objetoArchivo.writeObject(jugador);
+        }
+        catch(IOException ex){
+        }
+    }
+    
+    public Jugador[] leerMultiJugador(){
+        
+        Jugador[] jugador = null;
+        
+        try{
+            archivoSalida = new FileInputStream("MultiJugadorPartida.dat");
+            ObjectInputStream salidaArchivo = new ObjectInputStream(archivoSalida);
+            jugador =(Jugador[]) salidaArchivo.readObject();
+        }
+        catch(ClassNotFoundException ex){
+        }
+        catch(IOException ex){     
+        }
+        return jugador;
+    }
 }

@@ -95,7 +95,9 @@ public class IniciarJuego extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "NO HA SELECCIONADO UN MODO DE JUEGO");
         }else{
             ListadoJugador listadoJugador = new ListadoJugador();
-            listadoJugador.setVisible(true);
+            //listadoJugador.setVisible(true);
+            OpcionesJuego juego = new OpcionesJuego();
+            juego.setVisible(true);
             this.setVisible(false);
         }
     }//GEN-LAST:event_empezarActionPerformed

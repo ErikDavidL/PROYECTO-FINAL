@@ -99,7 +99,6 @@ public class Escenario extends javax.swing.JFrame {
         enemigoDos();
         enemigoTres();
         mostrarEnemigos();
-        verSeleccionVehiculo();
     }
     //metodos para insertar los iconos de los enemigos y guardar su ubicacion
     public void enemigoUno(){
@@ -153,9 +152,6 @@ public class Escenario extends javax.swing.JFrame {
         tablaPos.setModel(new javax.swing.table.DefaultTableModel(jugabilidad.posicionVehiculo(vehiculosPartida), new String [] {
         "VEHICULO", "FILA", "COLUMNA"
         }));
-    }
-    public void verSeleccionVehiculo(){
-        listadoCambio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- SIN VEHICULO SELECCIONADO-",vehiculosPartida[0].getNombre(),vehiculosPartida[1].getNombre(),vehiculosPartida[2].getNombre()}));
     }
     public void mostrarTablaSeleccion(){
         tablaSeleccion.setModel(new javax.swing.table.DefaultTableModel(jugabilidad.seleccionVehiculo(vehiculosPartida),new String [] {"SELECCIONE UN VEHICULO"}));
@@ -335,7 +331,6 @@ public class Escenario extends javax.swing.JFrame {
         botonArriba = new javax.swing.JButton();
         botonDerecha = new javax.swing.JButton();
         botonAbajo = new javax.swing.JButton();
-        listadoCambio = new javax.swing.JComboBox<>();
         seleccionAccion = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaSeleccion = new javax.swing.JTable();
@@ -758,14 +753,6 @@ public class Escenario extends javax.swing.JFrame {
         });
         panelJugabilidad.add(botonAbajo, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 590, 60, 40));
 
-        listadoCambio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- SIN VEHICULO SELECCIONADO-" }));
-        listadoCambio.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                listadoCambioItemStateChanged(evt);
-            }
-        });
-        panelJugabilidad.add(listadoCambio, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 920, 280, 40));
-
         seleccionAccion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-SELECCIONE UNA ACCION-", "ATACAR", "MOVERSE", "CAMBIAR VEHICULO", " " }));
         seleccionAccion.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -1014,27 +1001,6 @@ public class Escenario extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_botonArribaActionPerformed
 
-    private void listadoCambioItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listadoCambioItemStateChanged
-        if(listadoCambio.getSelectedItem() == Jugabilidad.vehiculoUno.getNombre()){
-            verSeleccVehiculo.setText(Jugabilidad.vehiculoUno.getNombre());
-            verTipoVehiculo.setText(Jugabilidad.vehiculoUno.getTipoVehiculo());
-            vehiculoElegido = true;
-        }
-        if(listadoCambio.getSelectedItem() == Jugabilidad.vehiculoDos.getNombre()){
-            verSeleccVehiculo.setText(Jugabilidad.vehiculoDos.getNombre());
-            verTipoVehiculo.setText(Jugabilidad.vehiculoDos.getTipoVehiculo());
-            vehiculoElegido = true;
-        }
-        if(listadoCambio.getSelectedItem() == Jugabilidad.vehiculoTres.getNombre()){
-            verSeleccVehiculo.setText(Jugabilidad.vehiculoTres.getNombre());
-            verTipoVehiculo.setText(Jugabilidad.vehiculoTres.getTipoVehiculo());
-            vehiculoElegido = true;
-        }
-        if(listadoCambio.getSelectedItem() == "- SIN VEHICULO SELECCIONADO-"){
-            vehiculoElegido = false;
-        }
-    }//GEN-LAST:event_listadoCambioItemStateChanged
-
     public void definirAccion(){
         if(seleccionAccion.getSelectedItem() == "MOVERSE"){
             if(contadorVehiculo == 0){       
@@ -1185,7 +1151,6 @@ public class Escenario extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JComboBox<String> listadoCambio;
     private javax.swing.JLabel mostrarNombre;
     private javax.swing.JLabel mostrarTipo;
     private javax.swing.JLabel numeroCasillas;
