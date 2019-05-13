@@ -62,11 +62,11 @@ public class Verificador {
         leerVehiculosPartida();
         leerJugador();
         leerVehiculosPartida();
-        actualizarVehiculo(0);
-        actualizarVehiculo(1);
-        actualizarVehiculo(2);
+        //actualizarVehiculo(0);
+        //actualizarVehiculo(1);
+        //actualizarVehiculo(2);
         actualizarJugador();
-        archivoVehiculo.guardarArchivo(listadoVehiculos);
+        //archivoVehiculo.guardarArchivo(listadoVehiculos);
         JOptionPane.showMessageDialog(null, "El JUGADOR "+ListadoJugador.nombre+"\n HA GANADO EXPERIENCIA +1000 \n DINERO +400");
         
     }
@@ -112,22 +112,22 @@ public class Verificador {
             experiencia = listadoJugador.get(identificadorEncontrado).getExperiencia()+1000;
             listadoJugador.get(identificadorEncontrado).setExperiencia(experiencia);
             
-            if(listadoJugador.get(identificadorEncontrado).getExperiencia() <= 500){
+            if(listadoJugador.get(identificadorEncontrado).getExperiencia() <= 500 && listadoJugador.get(identificadorEncontrado).getExperiencia() > 0){
                 listadoJugador.get(identificadorEncontrado).setNivel(1);
             }
-            if(listadoJugador.get(identificadorEncontrado).getExperiencia() <= 1500){
+            if(listadoJugador.get(identificadorEncontrado).getExperiencia() <= 1500 && listadoJugador.get(identificadorEncontrado).getExperiencia() > 500){
                 listadoJugador.get(identificadorEncontrado).setNivel(2);
             }
-            if(listadoJugador.get(identificadorEncontrado).getExperiencia() <= 2500){
+            if(listadoJugador.get(identificadorEncontrado).getExperiencia() <= 2500 && listadoJugador.get(identificadorEncontrado).getExperiencia() > 1500){
                 listadoJugador.get(identificadorEncontrado).setNivel(3);
             }
-            if(listadoJugador.get(identificadorEncontrado).getExperiencia() <= 3500){
+            if(listadoJugador.get(identificadorEncontrado).getExperiencia() <= 3500 && listadoJugador.get(identificadorEncontrado).getExperiencia() > 2500){
                 listadoJugador.get(identificadorEncontrado).setNivel(4);
             }
-            if(listadoJugador.get(identificadorEncontrado).getExperiencia() <= 4500){
+            if(listadoJugador.get(identificadorEncontrado).getExperiencia() <= 4500 && listadoJugador.get(identificadorEncontrado).getExperiencia() > 3500){
                 listadoJugador.get(identificadorEncontrado).setNivel(5);
             }
-            if(listadoJugador.get(identificadorEncontrado).getExperiencia() <= 5500){
+            if(listadoJugador.get(identificadorEncontrado).getExperiencia() <= 5500 && listadoJugador.get(identificadorEncontrado).getExperiencia() > 4500){
                 listadoJugador.get(identificadorEncontrado).setNivel(6);
             }  
         }

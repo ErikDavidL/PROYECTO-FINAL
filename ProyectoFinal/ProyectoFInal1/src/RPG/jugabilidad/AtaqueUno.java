@@ -4,8 +4,9 @@ package RPG.jugabilidad;
 import RPG.vehiculos.Vehiculo;
 import javax.swing.JOptionPane;
 
-public class Atacar {
-      
+
+public class AtaqueUno {
+    
     public void atacar(String porcentajeAtaque,String direccion, int[][] posicionesEnemigos,int columnasEscenario,int filasEscenario, int identificador,Vehiculo[] vehiculosPartida){
         
         if(direccion.equals("arriba")){
@@ -24,7 +25,6 @@ public class Atacar {
     
     public void atacarDerecha(String porcentajeAtaque,int columnasEscenario,int[][] posiciones, int identificador,Vehiculo[] vehiculosPartida){
         Boolean busqueda = false;
-        int porcentaje = Integer.parseInt(porcentajeAtaque);
         int verificarFila = 0;
         int verificarColumna = 0;
         int i;
@@ -40,12 +40,11 @@ public class Atacar {
             }
             i++;
         }  
-        realizarAtaque(porcentaje,busqueda,verificarFila,verificarColumna, vehiculosPartida,identificador);      
+        realizarAtaque(busqueda,verificarFila,verificarColumna, vehiculosPartida,identificador);      
     }
     
     public void atacarIzquierda(String porcentajeAtaque,int[][] posiciones,int identificador, Vehiculo[] vehiculosPartida){
         Boolean busqueda = false;
-        int porcentaje = Integer.parseInt(porcentajeAtaque);
         int verificarFila = 0;
         int verificarColumna = 0;
         int fila = posicionFila(identificador, vehiculosPartida);        
@@ -56,15 +55,13 @@ public class Atacar {
                 busqueda = true;
                 verificarFila = fila;
                 verificarColumna = i;
-                break;
             }
             i--;
         }
-        realizarAtaque(porcentaje,busqueda,verificarFila,verificarColumna,vehiculosPartida,identificador);
+        realizarAtaque(busqueda,verificarFila,verificarColumna,vehiculosPartida,identificador);
     }
     public void atacarArriba(String porcentajeAtaque,int[][] posiciones,int identificador,Vehiculo[] vehiculosPartida){
         Boolean busqueda = false;
-        int porcentaje = Integer.parseInt(porcentajeAtaque);
         int verificarFila = 0;
         int verificarColumna = 0;
         int fila = posicionFila(identificador,vehiculosPartida);
@@ -75,15 +72,13 @@ public class Atacar {
                 busqueda = true;
                 verificarFila = i;
                 verificarColumna = columna;
-                break;
             }
             i--;
         }  
-        realizarAtaque(porcentaje,busqueda,verificarFila,verificarColumna,vehiculosPartida,identificador);
+        realizarAtaque(busqueda,verificarFila,verificarColumna,vehiculosPartida,identificador);
     }
     public void atacarAbajo(String porcentajeAtaque,int filasEscenario,int[][] posiciones, int identificador ,Vehiculo[] vehiculosPartida){
         Boolean busqueda = false;
-        int porcentaje = Integer.parseInt(porcentajeAtaque);
         int verificarFila = 0;
         int verificarColumna = 0;
         int fila = posicionFila(identificador,vehiculosPartida);
@@ -94,28 +89,27 @@ public class Atacar {
                 busqueda = true;
                 verificarFila = i;
                 verificarColumna = columna;
-                break;
             }
             i++;
         }   
-        realizarAtaque(porcentaje,busqueda,verificarFila,verificarColumna,vehiculosPartida,identificador);
+        realizarAtaque(busqueda,verificarFila,verificarColumna,vehiculosPartida,identificador);
     }
     
-    public void realizarAtaque(int porcentaje,Boolean acertado, int filaEnemigo, int columnaEnemigo,Vehiculo[] vehiculosPartida,int identificador){
+    public void realizarAtaque(Boolean acertado, int filaEnemigo, int columnaEnemigo,Vehiculo[] vehiculosPartida,int identificador){
         if(acertado == true){
             JOptionPane.showMessageDialog(null, "ATAQUE EXITOSO, DAÑO HECHO");
-            reducirVida(porcentaje,filaEnemigo,columnaEnemigo,vehiculosPartida, identificador);
+            reducirVida(filaEnemigo,columnaEnemigo,vehiculosPartida, identificador);
         }
         if(acertado == false){
             JOptionPane.showMessageDialog(null, "EL ATAQUE HA FALLADO");
         }
     }
     
-    public void reducirVida(int porcentaje,int fila, int columna, Vehiculo[] vehiculosPartida, int identificador){
+    public void reducirVida(int fila, int columna, Vehiculo[] vehiculosPartida, int identificador){
         if(fila == Jugabilidad.enemigos[0].getPosFila() && columna == Jugabilidad.enemigos[0].getPosColumna()){
             
             if(Jugabilidad.enemigos[0].getVida() > 0){
-                int vida = Jugabilidad.enemigos[0].getVida() - (valorAtaque(vehiculosPartida,identificador)+(valorAtaque(vehiculosPartida,identificador))*(porcentaje/100));            
+                int vida = Jugabilidad.enemigos[0].getVida() - valorAtaque(vehiculosPartida,identificador);            
                 verificarAtaque(vida,0,vehiculosPartida,identificador);
             }
             if(Jugabilidad.enemigos[0].getVida() <= 0){
@@ -125,7 +119,7 @@ public class Atacar {
         if(fila == Jugabilidad.enemigos[1].getPosFila() && columna == Jugabilidad.enemigos[1].getPosColumna()){
             
             if(Jugabilidad.enemigos[1].getVida() > 0){
-                int vida = Jugabilidad.enemigos[1].getVida() - (valorAtaque(vehiculosPartida,identificador)+(valorAtaque(vehiculosPartida,identificador))*(porcentaje/100));            
+                int vida = Jugabilidad.enemigos[0].getVida() - valorAtaque(vehiculosPartida,identificador);            
                 verificarAtaque(vida,1,vehiculosPartida,identificador);
             }
             if(Jugabilidad.enemigos[1].getVida() <= 0){
@@ -135,7 +129,7 @@ public class Atacar {
         if(fila == Jugabilidad.enemigos[2].getPosFila() && columna == Jugabilidad.enemigos[2].getPosColumna()){
             
             if(Jugabilidad.enemigos[2].getVida() > 0){
-                int vida = Jugabilidad.enemigos[2].getVida() - (valorAtaque(vehiculosPartida,identificador)+(valorAtaque(vehiculosPartida,identificador))*(porcentaje/100));            
+                int vida = Jugabilidad.enemigos[2].getVida() - valorAtaque(vehiculosPartida,identificador);            
                 verificarAtaque(vida,2,vehiculosPartida,identificador);
             }
             if(Jugabilidad.enemigos[2].getVida() <= 0){
@@ -151,7 +145,6 @@ public class Atacar {
             Jugabilidad.enemigos[indice].setVida(vidaActual);
         }
         if(vidaActual > 0){
-     
             JOptionPane.showMessageDialog(null, "EL ENEMIGO "+Jugabilidad.enemigos[indice].getNombre() +" HA RECIBIDO DAÑO");
             Jugabilidad.enemigos[indice].setVida(vidaActual);
         }

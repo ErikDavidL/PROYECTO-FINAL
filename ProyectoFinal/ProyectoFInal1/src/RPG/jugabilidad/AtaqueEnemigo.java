@@ -60,11 +60,11 @@ public class AtaqueEnemigo {
     }
     public int noDireccion(){
         Random numeroAleatorio = new Random();
-        return numeroAleatorio.nextInt(3)+1;
+        return numeroAleatorio.nextInt(4)+1;
     }
     public int noEnemigo(){
         Random numeroAleatorio = new Random();
-        return numeroAleatorio.nextInt(2)+1;
+        return numeroAleatorio.nextInt(3)+1;
     }
     public void derechaEnemigo(int columnasEscenario,int[][] posiciones,int posFila,int posColumna,Vehiculo[] vehiculosPartida){
         Boolean busqueda = false;
@@ -79,6 +79,7 @@ public class AtaqueEnemigo {
                 busqueda = true;
                 verificarFila = fila;
                 verificarColumna = i;
+              
             }
             i++;
         }  
@@ -96,6 +97,7 @@ public class AtaqueEnemigo {
                 busqueda = true;
                 verificarFila = fila;
                 verificarColumna = i;
+                
             }
             i--;
         }
@@ -113,6 +115,7 @@ public class AtaqueEnemigo {
                 busqueda = true;
                 verificarFila = i;
                 verificarColumna = columna;
+              
             }
             i--;
         }  
@@ -130,6 +133,7 @@ public class AtaqueEnemigo {
                 busqueda = true;
                 verificarFila = i;
                 verificarColumna = columna;
+            
             }
             i++;
         }   
@@ -147,28 +151,45 @@ public class AtaqueEnemigo {
     
     public void reducirVidaVehiculo(int fila, int columna, int ataque,Vehiculo[] vehiculosPartida){
         if(fila == vehiculosPartida[0].getPosFila() && columna == vehiculosPartida[0].getPosColumna()){
-            if(vehiculosPartida[0].getVida()> 0){
+            
                 int vida = vehiculosPartida[0].getVida() - ataque;
                 ataqueHecho(vida,0,vehiculosPartida);
-            }else{
-                JOptionPane.showMessageDialog(null, "EL ENEMIGO HA FALLADO EL ATAQUE");
+            /*if(vida <= 0){
+                JOptionPane.showMessageDialog(null, "EL VEHICULO "+ vehiculosPartida[0].getNombre() +" HA MUERTO");
+                vida = 0;
+                vehiculosPartida[0].setVida(vida);
             }
+            if( vida > 0){
+            JOptionPane.showMessageDialog(null, "EL VEHICULO "+vehiculosPartida[0].getNombre() +" HA RECIBIDO DAÑO");
+                vehiculosPartida[0].setVida(vida);
+            }*/
+            
         }
         if(fila == vehiculosPartida[1].getPosFila() && columna == vehiculosPartida[1].getPosColumna()){
-            if(vehiculosPartida[1].getVida()> 0){
-                int vida = vehiculosPartida[0].getVida() - ataque;
+                int vida = vehiculosPartida[1].getVida() - ataque;
                 ataqueHecho(vida,1,vehiculosPartida);
-            }else{
-                JOptionPane.showMessageDialog(null, "EL ENEMIGO HA FALLADO EL ATAQUE");
+            /*if(vida <= 0){
+                JOptionPane.showMessageDialog(null, "EL VEHICULO "+ vehiculosPartida[1].getNombre() +" HA MUERTO");
+                vida = 0;
+                vehiculosPartida[1].setVida(vida);
             }
+            if( vida > 0){
+            JOptionPane.showMessageDialog(null, "EL VEHICULO "+vehiculosPartida[1].getNombre() +" HA RECIBIDO DAÑO");
+                vehiculosPartida[2].setVida(vida);
+            }*/
         }
         if(fila == vehiculosPartida[2].getPosFila() && columna == vehiculosPartida[2].getPosColumna()){
-            if(vehiculosPartida[2].getVida()> 0){
-                int vida = vehiculosPartida[0].getVida() - ataque;
+                int vida = vehiculosPartida[2].getVida() - ataque;
                 ataqueHecho(vida,2,vehiculosPartida);
-            }else{
-                JOptionPane.showMessageDialog(null, "EL ENEMIGO HA FALLADO EL ATAQUE");
+            /*if(vida <= 0){
+                JOptionPane.showMessageDialog(null, "EL VEHICULO "+ vehiculosPartida[2].getNombre() +" HA MUERTO");
+                vida = 0;
+                vehiculosPartida[2].setVida(vida);
             }
+            if( vida > 0){
+            JOptionPane.showMessageDialog(null, "EL VEHICULO "+vehiculosPartida[2].getNombre() +" HA RECIBIDO DAÑO");
+                vehiculosPartida[2].setVida(vida);
+            }*/
         }
     }
     
@@ -176,10 +197,13 @@ public class AtaqueEnemigo {
         if(actualVida <= 0){
                 JOptionPane.showMessageDialog(null, "EL VEHICULO "+ vehiculosPartida[indice].getNombre() +" HA MUERTO");
                 actualVida = 0;
-        }else{
-                JOptionPane.showMessageDialog(null, "EL VEHICULO "+vehiculosPartida[indice].getNombre() +" HA RECIBIDO DAÑO");
+                vehiculosPartida[indice].setVida(actualVida);
         }
-        vehiculosPartida[indice].setVida(actualVida);
+        if( actualVida > 0){
+            JOptionPane.showMessageDialog(null, "EL VEHICULO "+vehiculosPartida[indice].getNombre() +" HA RECIBIDO DAÑO");
+                vehiculosPartida[indice].setVida(actualVida);
+        }
+        
         return vehiculosPartida;
     }
 }

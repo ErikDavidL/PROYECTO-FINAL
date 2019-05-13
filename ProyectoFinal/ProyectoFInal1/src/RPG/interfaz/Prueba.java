@@ -9,6 +9,8 @@ import RPG.armas.Arma;
 import RPG.jugador.Jugador;
 import RPG.vehiculos.Vehiculo;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class Prueba extends javax.swing.JFrame {
 
@@ -32,17 +34,14 @@ public class Prueba extends javax.swing.JFrame {
         tablaJugadores();
         tablaArmas();
         tablaVehiculos();
-        tablaJugadorPartida();
-    }
-    public void tablaJugadorPartida(){
-        String listado[][] = new String[2][4];
-        String cadena;
-        for (int i = 0; i < 1; i++) {
-            listado[i][0]= cadena = String.valueOf(jugadorPartida.getIdentificador());
-            listado[i][1]= jugadorPartida.getNombre();
-            listado[i][2]= cadena = String.valueOf(jugadorPartida.getNivel());
-        } 
-        tablaPartida.setModel(new javax.swing.table.DefaultTableModel(listado,new String [] {"NUMERO", "JUGADOR", "NIVEL"}));        
+        DefaultTableModel modeloJugador = (DefaultTableModel) tablaJugador.getModel();
+        tablaJugador.setRowSorter(new TableRowSorter(modeloJugador));
+        
+        DefaultTableModel modeloVehiculo = (DefaultTableModel) tablaVehiculo.getModel();
+        tablaVehiculo.setRowSorter(new TableRowSorter(modeloVehiculo));
+        
+        DefaultTableModel modeloArma = (DefaultTableModel) tablaArma.getModel();
+        tablaArma.setRowSorter(new TableRowSorter(modeloArma));
     }
     public void tablaJugadores(){
         String listado[][] = new String[listaJugador.size()][5];
@@ -54,7 +53,7 @@ public class Prueba extends javax.swing.JFrame {
             listado[i][3]= cadena = String.valueOf(listaJugador.get(i).getExperiencia());
             listado[i][4]= cadena = String.valueOf(listaJugador.get(i).getDinero());
         } 
-        tablaJugador.setModel(new javax.swing.table.DefaultTableModel(listado,new String [] {"NUMERO", "JUGADOR", "NIVEL","EXPERIENCIA","DINERO"}));
+        tablaJugador.setModel(new javax.swing.table.DefaultTableModel(listado,new String [] {"REGISTRO", "JUGADOR", "NIVEL","EXPERIENCIA","DINERO"}));
     }
     public void tablaArmas(){
         String listado[][] = new String[listaArma.size()][5];
@@ -76,10 +75,9 @@ public class Prueba extends javax.swing.JFrame {
             listado[i][1]= listaVehiculo.get(i).getNombre();
             listado[i][2]= listaVehiculo.get(i).getTipoVehiculo();
             listado[i][3]= listaVehiculo.get(i).getCreadorAuto();
-            listado[i][4]= cadena = String.valueOf(listaVehiculo.get(i).getCodigoCreador());
-            listado[i][5]= cadena = String.valueOf(listaVehiculo.get(i).getEliminaciones());
+            listado[i][4]= cadena = String.valueOf(listaVehiculo.get(i).getEliminaciones());
         }
-        tablaVehiculo.setModel(new javax.swing.table.DefaultTableModel(listado,new String [] {"NUMERO", "NOMBRE", "TIPO VEHICULO", "PERTENECE A","REGISTRO CREADOR","KILLS"}));
+        tablaVehiculo.setModel(new javax.swing.table.DefaultTableModel(listado,new String [] {"REGISTRO", "NOMBRE", "TIPO VEHICULO", "PERTENECE A","KILLS"}));
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -92,13 +90,19 @@ public class Prueba extends javax.swing.JFrame {
         tablaVehiculo = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaArma = new javax.swing.JTable();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        tablaPartida = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        armasinfo = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tablaJugador.setModel(new javax.swing.table.DefaultTableModel(
@@ -113,7 +117,7 @@ public class Prueba extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablaJugador);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 21, 1240, 106));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 1220, 180));
 
         tablaVehiculo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -128,7 +132,7 @@ public class Prueba extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(tablaVehiculo);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 145, 1210, 126));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 330, 1220, 170));
 
         tablaArma.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -143,29 +147,47 @@ public class Prueba extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(tablaArma);
 
-        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 303, 1100, 131));
+        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 550, 1220, 150));
 
-        tablaPartida.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null}
-            },
-            new String [] {
-                "NUMERO", "JUGADOR", "NIVEL"
-            }
-        ));
-        jScrollPane5.setViewportView(tablaPartida);
+        jLabel2.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 16)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("PUEDE ORDENAR LOS ELEMENTOS DE LAS TABLAS AL HACER CLICK SOBRE LOS TITULOS");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 20, -1, -1));
 
-        jPanel1.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 460, 1080, 60));
+        armasinfo.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 16)); // NOI18N
+        armasinfo.setForeground(new java.awt.Color(255, 255, 255));
+        armasinfo.setText("ARMAS");
+        jPanel1.add(armasinfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 510, 180, 30));
 
-        jButton1.setText("REGRESA");
+        jLabel4.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 16)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("JUGADORES");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 60, 180, 30));
+
+        jLabel5.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 16)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("VEHICULOS");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 290, 180, 30));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 1290, 720));
+
+        jButton1.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 0, 0));
+        jButton1.setText("SALIR");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 600, 120, 40));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 820, 150, 50));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 1260, 710));
+        jLabel1.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("ESTADISTICAS DEL JUEGO");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 30, 340, 30));
+
+        fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenesFondo/verde.jpg"))); // NOI18N
+        getContentPane().add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1380, 880));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -209,15 +231,19 @@ public class Prueba extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel armasinfo;
+    private javax.swing.JLabel fondo;
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable tablaArma;
     private javax.swing.JTable tablaJugador;
-    private javax.swing.JTable tablaPartida;
     private javax.swing.JTable tablaVehiculo;
     // End of variables declaration//GEN-END:variables
 }

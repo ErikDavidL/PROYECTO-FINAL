@@ -899,6 +899,7 @@ public class Escenario extends javax.swing.JFrame {
                         insertarTerreno(filaVehiculo,columnaVehiculo);
                     }
                 }
+                ataqueEnemigo.ataqueEnemigo(recibirColumna,recibirFila, posiciones, vehiculosPartida);
                 
             }else{
                 JOptionPane.showMessageDialog(null, "NO HA SELECCIONADO UN VEHICULO");
@@ -944,11 +945,13 @@ public class Escenario extends javax.swing.JFrame {
             verificar.victoriaPartida();
             Inicio inicio = new Inicio();
             inicio.setVisible(true);
+            this.setVisible(false);
         }
         if(perdioJuego == true){
             JOptionPane.showMessageDialog(null, "HAS PERDIDO, TODOS TUS VEHICULOS HAN SIDO DESTRUIDOS");
             Inicio inicio = new Inicio();
             inicio.setVisible(true);
+            this.setVisible(false);
 
         }
     }
