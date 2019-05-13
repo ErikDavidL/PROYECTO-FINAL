@@ -3,15 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/powerik/Escritorio/Proyecto%20Final/ProyectoFInal1/src/RPG/interfaz/IngresarJugador.java</file>
-            <file>file:/home/powerik/Escritorio/Proyecto%20Final/ProyectoFInal1/src/RPG/archivos/ArchivoJugador.java</file>
             <file>file:/home/powerik/Escritorio/Proyecto%20Final/ProyectoFInal1/src/RPG/jugabilidad/Verificador.java</file>
             <file>file:/home/powerik/Escritorio/Proyecto%20Final/ProyectoFInal1/src/RPG/archivos/ArchivoJugabilidad.java</file>
-            <file>file:/home/powerik/Escritorio/Proyecto%20Final/ProyectoFInal1/src/RPG/archivos/ArchivoVehiculo.java</file>
-            <file>file:/home/powerik/Escritorio/Proyecto%20Final/ProyectoFInal1/src/RPG/interfaz/ListadoJugador.java</file>
-            <file>file:/home/powerik/Escritorio/Proyecto%20Final/ProyectoFInal1/src/RPG/archivos/ArchivoArma.java</file>
+            <file>file:/home/powerik/Escritorio/Proyecto%20Final/ProyectoFInal1/src/RPG/interfaz/Escenario.java</file>
+            <file>file:/home/powerik/Escritorio/Proyecto%20Final/ProyectoFInal1/src/RPG/interfaz/ListadoVehiculo.java</file>
+            <file>file:/home/powerik/Escritorio/Proyecto%20Final/ProyectoFInal1/src/RPG/jugabilidad/AtaqueEnemigo.java</file>
+            <file>file:/home/powerik/Escritorio/Proyecto%20Final/ProyectoFInal1/src/RPG/jugabilidad/Jugabilidad.java</file>
+            <file>file:/home/powerik/Escritorio/Proyecto%20Final/ProyectoFInal1/src/RPG/jugabilidad/Atacar.java</file>
             <file>file:/home/powerik/Escritorio/Proyecto%20Final/ProyectoFInal1/src/RPG/interfaz/Prueba.java</file>
-            <file>file:/home/powerik/Escritorio/Proyecto%20Final/ProyectoFInal1/src/RPG/jugabilidad/Ataque.java</file>
         </group>
     </open-files>
 </project-private>

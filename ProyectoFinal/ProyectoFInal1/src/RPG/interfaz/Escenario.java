@@ -1,17 +1,19 @@
 
 package RPG.interfaz;
 
-import RPG.enemigos.Enemigo;
+import RPG.archivos.ArchivoJugabilidad;
 import RPG.escenario.IconoAvion;
 import RPG.escenario.IconoEnemigo;
 import RPG.escenario.IconoTanque;
 import RPG.escenario.Terreno;
-import RPG.jugabilidad.Ataque;
+import RPG.jugabilidad.Atacar;
+import RPG.jugabilidad.AtaqueEnemigo;
 import RPG.jugabilidad.DadoPartida;
 import RPG.jugabilidad.IconoFlecha;
 import RPG.jugabilidad.Jugabilidad;
-import RPG.jugabilidad.Movimiento;
+import RPG.jugabilidad.MoverVehiculo;
 import RPG.jugabilidad.Verificador;
+import RPG.vehiculos.Vehiculo;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,6 +27,11 @@ import javax.swing.border.LineBorder;
 public class Escenario extends javax.swing.JFrame {
 
     //variables utilizadas para el funcionamiento del escenario junto con la jugabilidad
+    ArchivoJugabilidad archivoPartida = new ArchivoJugabilidad();
+    Vehiculo[] vehiculosPartida = new Vehiculo[3];
+    int codigoVehiculo;
+    int codigoMovimiento = 0;
+    String mostrarTipoVehiculo;
     public static int recibirFila,recibirColumna;
     public static int[][] posiciones;
     public static String[][] codigoTerreno;
@@ -38,6 +45,7 @@ public class Escenario extends javax.swing.JFrame {
     Terreno terrenos = new Terreno();
     String[][] tipoVehiculos;
     String recibirTipo ="Tanque";
+
     int codigoUno =0,codigoDos =0,codigoTres =0;
     Icon iconoVehiculo;
     IconoAvion iconoAvion = new IconoAvion();
@@ -60,8 +68,9 @@ public class Escenario extends javax.swing.JFrame {
     
     DadoPartida mostrarDado = new DadoPartida();
     Jugabilidad jugabilidad = new Jugabilidad();
-    Movimiento movimiento = new Movimiento();
-    Ataque ataque = new Ataque(); 
+    MoverVehiculo moverse = new MoverVehiculo();
+    Atacar atacar = new Atacar();
+    AtaqueEnemigo ataqueEnemigo = new AtaqueEnemigo();
     Verificador verificar = new Verificador();
     int contadorVehiculo = 3;
     Boolean duplicado = false;
@@ -79,9 +88,11 @@ public class Escenario extends javax.swing.JFrame {
     public void valoresIniciales(){    
         verJugador.setText(ListadoJugador.nombre);
         verNivel.setText(String.valueOf(ListadoJugador.nivel));
+        vehiculosPartida = archivoPartida.leerVehiculo();
         inicioDados();
         mostrarVida();
         mostrarAtaque();
+        mostrarTablaSeleccion();
         mostrarPosiciones();
         mostrarFlechas();
         enemigoUno();
@@ -97,7 +108,7 @@ public class Escenario extends javax.swing.JFrame {
         escenario[fila][columna].setIcon(iconoEnemigo.insertarIcono(recibirFila, codigoTerreno[fila][columna]));
         posiciones[fila][columna] = IconoEnemigo.codigoEnemigo;
         Jugabilidad.enemigos[0].setPosColumna(columna);
-        Jugabilidad.enemigos[0].setPosFila(fila);;
+        Jugabilidad.enemigos[0].setPosFila(fila);
     }
     public void enemigoDos(){
         int fila = jugabilidad.randomFilas(recibirFila);
@@ -125,15 +136,11 @@ public class Escenario extends javax.swing.JFrame {
     }
     //metodo para mostrar la tabla de vida
     public void mostrarVida(){
-        tablaVida.setModel(new javax.swing.table.DefaultTableModel(jugabilidad.mostrarVidaJugador(), new String [] {
-        "VEHICULO", "TIPO VEHICULO", "PUNTOS DE VIDA (HP)"
-        }));
+        tablaVida.setModel(new javax.swing.table.DefaultTableModel(jugabilidad.vidaVehiculo(vehiculosPartida), new String [] {"VEHICULO", "TIPO VEHICULO", "PUNTOS DE VIDA (HP)"}));
     }
     //metodo para mostrar la tabla de ataque
     public void mostrarAtaque(){
-        tablaAtaqueDefensa.setModel(new javax.swing.table.DefaultTableModel(jugabilidad.mostrarAtaqueDefensaJugador(), new String [] {
-        "VEHICULO", "PUNTOS ATAQUE","PUNTOS DEFENSA"
-        }));
+        tablaAtaqueDefensa.setModel(new javax.swing.table.DefaultTableModel(jugabilidad.ataqueDefensaVehiculo(vehiculosPartida), new String [] {"VEHICULO", "PUNTOS ATAQUE","PUNTOS DEFENSA"}));
     }
     //metodo para mostrar la tabla de enemigos
     public void mostrarEnemigos(){
@@ -143,12 +150,15 @@ public class Escenario extends javax.swing.JFrame {
     }
     //metodo para mostrar la tabla de posiciones
     public void mostrarPosiciones(){
-        tablaPos.setModel(new javax.swing.table.DefaultTableModel(jugabilidad.mostrarPosicion(), new String [] {
+        tablaPos.setModel(new javax.swing.table.DefaultTableModel(jugabilidad.posicionVehiculo(vehiculosPartida), new String [] {
         "VEHICULO", "FILA", "COLUMNA"
         }));
     }
     public void verSeleccionVehiculo(){
-        listadoCambio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- SIN VEHICULO SELECCIONADO-",Jugabilidad.vehiculoUno.getNombre(),Jugabilidad.vehiculoDos.getNombre(),Jugabilidad.vehiculoTres.getNombre(), }));
+        listadoCambio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- SIN VEHICULO SELECCIONADO-",vehiculosPartida[0].getNombre(),vehiculosPartida[1].getNombre(),vehiculosPartida[2].getNombre()}));
+    }
+    public void mostrarTablaSeleccion(){
+        tablaSeleccion.setModel(new javax.swing.table.DefaultTableModel(jugabilidad.seleccionVehiculo(vehiculosPartida),new String [] {"SELECCIONE UN VEHICULO"}));
     }
     //metodo para gener el escenario y para colocar lso vehiculos
     public void generarEscenario(int entradaFila,int entradaColumna){
@@ -234,6 +244,8 @@ public class Escenario extends javax.swing.JFrame {
             iconoVehiculo = iconoTanque.insertarIcono(filas, tipo);
             posiciones[fila][columna] = IconoTanque.reductorContador;
             jugabilidad.guardarPosicion(contadorVehiculo, fila, columna);
+            
+            jugabilidad.guardarPosiciones(vehiculosPartida, contadorVehiculo, fila, columna);
             contadorVehiculo = contadorVehiculo - IconoTanque.reductorContador;
             duplicado = IconoTanque.yaIngresado;
         }
@@ -241,6 +253,8 @@ public class Escenario extends javax.swing.JFrame {
             iconoVehiculo = iconoAvion.insertarIcono(filas, tipo);
             posiciones[fila][columna] = IconoAvion.reductorContador;
             jugabilidad.guardarPosicion(contadorVehiculo, fila, columna);
+            
+            jugabilidad.guardarPosiciones(vehiculosPartida, contadorVehiculo, fila, columna);
             contadorVehiculo = contadorVehiculo - IconoAvion.reductorContador;
             duplicado = IconoAvion.yaIngresado;
         }
@@ -307,6 +321,7 @@ public class Escenario extends javax.swing.JFrame {
         tablaVida = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         verSeleccVehiculo = new javax.swing.JLabel();
+        verRegistro = new javax.swing.JLabel();
         panelEnemigo = new javax.swing.JScrollPane();
         tablaEnemigo = new javax.swing.JTable();
         panelJugador = new javax.swing.JPanel();
@@ -322,6 +337,8 @@ public class Escenario extends javax.swing.JFrame {
         botonAbajo = new javax.swing.JButton();
         listadoCambio = new javax.swing.JComboBox<>();
         seleccionAccion = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaSeleccion = new javax.swing.JTable();
         prueba = new javax.swing.JLabel();
         fondo = new javax.swing.JLabel();
         verTipoVehiculo = new javax.swing.JLabel();
@@ -631,16 +648,19 @@ public class Escenario extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(54, Short.MAX_VALUE)
-                .addComponent(verSeleccVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE)
+                .addComponent(verSeleccVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(verRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(verSeleccVehiculo, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+            .addComponent(verRegistro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        panelJugabilidad.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 740, 420, 30));
+        panelJugabilidad.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 770, 420, 30));
 
         tablaEnemigo = new javax.swing.JTable(){
             public boolean isCellEditable(int rowIndex, int colIndex){
@@ -659,7 +679,7 @@ public class Escenario extends javax.swing.JFrame {
         ));
         panelEnemigo.setViewportView(tablaEnemigo);
 
-        panelJugabilidad.add(panelEnemigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 810, 410, 80));
+        panelJugabilidad.add(panelEnemigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 830, 410, 80));
 
         panelJugador.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -744,7 +764,7 @@ public class Escenario extends javax.swing.JFrame {
                 listadoCambioItemStateChanged(evt);
             }
         });
-        panelJugabilidad.add(listadoCambio, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 670, 280, 40));
+        panelJugabilidad.add(listadoCambio, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 920, 280, 40));
 
         seleccionAccion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-SELECCIONE UNA ACCION-", "ATACAR", "MOVERSE", "CAMBIAR VEHICULO", " " }));
         seleccionAccion.addItemListener(new java.awt.event.ItemListener() {
@@ -754,13 +774,32 @@ public class Escenario extends javax.swing.JFrame {
         });
         panelJugabilidad.add(seleccionAccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 450, 420, 40));
 
+        tablaSeleccion.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "SELECCIONE UN VEHICULO"
+            }
+        ));
+        tablaSeleccion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaSeleccionMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tablaSeleccion);
+
+        panelJugabilidad.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 650, 280, 80));
+
         getContentPane().add(panelJugabilidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(1410, 40, 470, 960));
 
         prueba.setForeground(new java.awt.Color(255, 255, 255));
         getContentPane().add(prueba, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 110, 20));
 
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenesFondo/verde.jpg"))); // NOI18N
-        getContentPane().add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1930, 1020));
+        getContentPane().add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1930, 1070));
         getContentPane().add(verTipoVehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 830, 50, 20));
 
         pack();
@@ -771,22 +810,20 @@ public class Escenario extends javax.swing.JFrame {
         inicio.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_rendirseActionPerformed
-
+    public void mostrarDatosVehiculo(int indice){
+            mostrarTipo.setText(vehiculosPartida[indice].getTipoVehiculo());
+            mostrarNombre.setText(vehiculosPartida[indice].getNombre());
+            duplicado = false;
+    }
     private void addVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehiculoActionPerformed
         if(contadorVehiculo ==3){
-            mostrarTipo.setText(ListadoVehiculo.vehiculoUno.getTipoVehiculo());
-            mostrarNombre.setText(ListadoVehiculo.vehiculoUno.getNombre());
-            duplicado = false;
+            mostrarDatosVehiculo(0);
         }
         if(contadorVehiculo ==2){
-            mostrarTipo.setText(ListadoVehiculo.vehiculoDos.getTipoVehiculo());
-            mostrarNombre.setText(ListadoVehiculo.vehiculoDos.getNombre());
-            duplicado = false;
+            mostrarDatosVehiculo(1);
         }
         if(contadorVehiculo ==1){
-            mostrarTipo.setText(ListadoVehiculo.vehiculoTres.getTipoVehiculo());
-            mostrarNombre.setText(ListadoVehiculo.vehiculoTres.getNombre());
-            duplicado = false;
+            mostrarDatosVehiculo(2);
         }
         if(contadorVehiculo !=1 && contadorVehiculo !=2 && contadorVehiculo !=3){
             JOptionPane.showMessageDialog(null, "VEHICULOS YA COLOCADOS");
@@ -798,205 +835,106 @@ public class Escenario extends javax.swing.JFrame {
             iconoVehiculo = iconoTanque.insertarIcono(filas, tipo);
             posiciones[fila][columna] = 1;
             Boolean insertado = IconoTanque.yaIngresado;
-                if(insertado == true){
-                    movimiento.nuevaPosicion(verSeleccVehiculo.getText(), fila, columna);
-                }else{}
+            guardarPosicion(insertado,fila,columna);    
+            
         }
         if(tipoVehiculo.equals("Avión")){ 
             iconoVehiculo = iconoAvion.insertarIcono(filas, tipo);
             posiciones[fila][columna] = 1;
             Boolean insertado = IconoAvion.yaIngresado;
-                if(insertado == true){
-                    movimiento.nuevaPosicion(verSeleccVehiculo.getText(), fila, columna);
-                }else{}
+            guardarPosicion(insertado,fila,columna);
         }
         return iconoVehiculo;    
     }
-    private void seleccMovimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccMovimientoActionPerformed
+    public void guardarPosicion(Boolean guardar, int fila, int columna){
+        if(guardar == true){
+                    moverse.nuevaPosicion(codigoVehiculo, fila, columna, vehiculosPartida);
+                }else{}
+    }
+    public void insertarTerreno(int fila,int columna){
+        Boolean errorTanque = IconoTanque.yaIngresado;
+        Boolean errorAvion = IconoAvion.yaIngresado;
+            if(errorTanque == false || errorAvion == false){
+            }else{
+                posiciones[fila][columna] = 0;
+                escenario[fila][columna].setIcon(terrenos.reinsertarIcono(recibirFila,codigoTerreno[fila][columna]));
+         }
+    }
+    public void moverVehiculos(){
+        String casillas = numeroCasillas.getText();
         String codigo;
-        int mover;
-        int filaVehiculo;
-        int columnaVehiculo;
-        
+           
         if(criterioMovimiento == true){
-        if(vehiculoElegido == true){
-            if(seleccionDireccion.equals("arriba") || seleccionDireccion.equals("abajo")){       
-                mover = movimiento.moverse(numeroCasillas.getText(), verSeleccVehiculo.getText(),seleccionDireccion, recibirFila, recibirColumna);          
-                if(verSeleccVehiculo.getText().equals(Jugabilidad.vehiculoUno.getNombre())){
-                    int filaAnterior = Jugabilidad.vehiculoUno.getPosFila();
-                    columnaVehiculo = Jugabilidad.vehiculoUno.getPosColumna();                    
-                    codigo = codigoTerreno[mover][columnaVehiculo];
-                        if(posiciones[mover][columnaVehiculo]==1){
-                            JOptionPane.showMessageDialog(null, "UN VEHICULO SE ENCUENTRA EN ESTA CASILLA");
-                        }
-                        if(posiciones[mover][columnaVehiculo]==2){                        
-                            JOptionPane.showMessageDialog(null, "SE ENCUENTRA UN ENEMIGO EN ESTA POSICION");
-                        } 
-                        if(posiciones[mover][columnaVehiculo]==0){            
-                            escenario[mover][columnaVehiculo].setIcon(moverVehiculo(codigo,mover,columnaVehiculo,verTipoVehiculo.getText()));
-                            Boolean errorTanque = IconoTanque.yaIngresado;
-                            Boolean errorAvion = IconoAvion.yaIngresado;
-                            if(errorTanque == false || errorAvion == false){
-                            }else{
-                                posiciones[filaAnterior][columnaVehiculo] = 0;
-                                escenario[filaAnterior][columnaVehiculo].setIcon(terrenos.reinsertarIcono(recibirFila,codigoTerreno[filaAnterior][columnaVehiculo]));
-                            }
-                        }
-                }   
-                if(verSeleccVehiculo.getText().equals(Jugabilidad.vehiculoDos.getNombre())){
-                    int filaAnterior = Jugabilidad.vehiculoDos.getPosFila();
-                    columnaVehiculo = Jugabilidad.vehiculoDos.getPosColumna();
-                    
-                    codigo = codigoTerreno[mover][columnaVehiculo];
-                        if(posiciones[mover][columnaVehiculo]==1){
-                            JOptionPane.showMessageDialog(null, "UN VEHICULO SE ENCUENTRA EN ESTA CASILLA");
-                        }
-                        if(posiciones[mover][columnaVehiculo]==2){                        
-                            JOptionPane.showMessageDialog(null, "SE ENCUENTRA UN ENEMIGO EN ESTA POSICION");
-                        } 
-                        if(posiciones[mover][columnaVehiculo]==0){            
-                            escenario[mover][columnaVehiculo].setIcon(moverVehiculo(codigo,mover,columnaVehiculo,verTipoVehiculo.getText()));
-                            Boolean errorTanque = IconoTanque.yaIngresado;
-                            Boolean errorAvion = IconoAvion.yaIngresado;
-                            if(errorTanque == false || errorAvion == false){
-                            }else{
-                                posiciones[filaAnterior][columnaVehiculo] = 0;
-                                escenario[filaAnterior][columnaVehiculo].setIcon(terrenos.reinsertarIcono(recibirFila,codigoTerreno[filaAnterior][columnaVehiculo]));
-                            }
-                        }
+            if(vehiculoElegido == true){
+                int cambioCasilla = moverse.moverse(casillas, vehiculosPartida,codigoVehiculo,seleccionDireccion, recibirFila, recibirColumna);
+                int filaVehiculo = moverse.filaVehiculo(codigoVehiculo, vehiculosPartida);
+                int columnaVehiculo = moverse.columnaVehiculo(codigoVehiculo, vehiculosPartida);
+                
+                if(codigoMovimiento == 0){
+                    JOptionPane.showMessageDialog(null, "NO HA SELECCIONADO UNA DIRECCION");
+                }            
+                if(codigoMovimiento == 1){
+                    if(posiciones[cambioCasilla][columnaVehiculo]==1){
+                        JOptionPane.showMessageDialog(null, "UN VEHICULO SE ENCUENTRA EN ESTA CASILLA");
+                    }
+                    if(posiciones[cambioCasilla][columnaVehiculo]==2){                        
+                        JOptionPane.showMessageDialog(null, "SE ENCUENTRA UN ENEMIGO EN ESTA POSICION");
+                    } 
+                    if(posiciones[cambioCasilla][columnaVehiculo]==0){
+                        codigo = codigoTerreno[cambioCasilla][columnaVehiculo];                    
+                        escenario[cambioCasilla][columnaVehiculo].setIcon(moverVehiculo(codigo,cambioCasilla,columnaVehiculo,mostrarTipoVehiculo));
+                        insertarTerreno(filaVehiculo,columnaVehiculo);
+                    }
                 }
-                if(verSeleccVehiculo.getText().equals(Jugabilidad.vehiculoTres.getNombre())){
-                    int filaAnterior = Jugabilidad.vehiculoTres.getPosFila();
-                    columnaVehiculo = Jugabilidad.vehiculoTres.getPosColumna();
-                    
-                    codigo = codigoTerreno[mover][columnaVehiculo];
-                        if(posiciones[mover][columnaVehiculo]==1){
-                            JOptionPane.showMessageDialog(null, "UN VEHICULO SE ENCUENTRA EN ESTA CASILLA");
-                        }
-                        if(posiciones[mover][columnaVehiculo]==2){                        
-                            JOptionPane.showMessageDialog(null, "SE ENCUENTRA UN ENEMIGO EN ESTA POSICION");
-                        } 
-                        if(posiciones[mover][columnaVehiculo]==0){            
-                            escenario[mover][columnaVehiculo].setIcon(moverVehiculo(codigo,mover,columnaVehiculo,verTipoVehiculo.getText()));
-                            Boolean errorTanque = IconoTanque.yaIngresado;
-                            Boolean errorAvion = IconoAvion.yaIngresado;
-                            if(errorTanque == false || errorAvion == false){
-                            }else{
-                                posiciones[filaAnterior][columnaVehiculo] = 0;
-                                escenario[filaAnterior][columnaVehiculo].setIcon(terrenos.reinsertarIcono(recibirFila,codigoTerreno[filaAnterior][columnaVehiculo]));
-                            }
-                        }
-                }
-            }
-            if(seleccionDireccion.equals("derecha") || seleccionDireccion.equals("izquierda")){
-                mover = movimiento.moverse(numeroCasillas.getText(), verSeleccVehiculo.getText(),seleccionDireccion, recibirFila, recibirColumna);
-                if(verSeleccVehiculo.getText().equals(Jugabilidad.vehiculoUno.getNombre())){
-                    int columnaAnterior = Jugabilidad.vehiculoUno.getPosColumna();
-                    filaVehiculo = Jugabilidad.vehiculoUno.getPosFila();                    
-                    codigo = codigoTerreno[filaVehiculo][mover];
-                        if(posiciones[filaVehiculo][mover]==1){
-                            JOptionPane.showMessageDialog(null, "UN VEHICULO SE ENCUENTRA EN ESTA CASILLA");
-                        }
-                        if(posiciones[filaVehiculo][mover]==2){                        
-                            JOptionPane.showMessageDialog(null, "SE ENCUENTRA UN ENEMIGO EN ESTA POSICION");
-                        } 
-                        if(posiciones[filaVehiculo][mover]==0){
-                            escenario[filaVehiculo][mover].setIcon(moverVehiculo(codigo,filaVehiculo,mover,verTipoVehiculo.getText()));
-                            Boolean errorTanque = IconoTanque.yaIngresado;
-                            Boolean errorAvion = IconoAvion.yaIngresado;
-                            if(errorTanque == false || errorAvion == false){   
-                            }else{
-                                posiciones[filaVehiculo][columnaAnterior] = 0;
-                                escenario[filaVehiculo][columnaAnterior].setIcon(terrenos.reinsertarIcono(recibirFila,codigoTerreno[filaVehiculo][columnaAnterior]));
-                            }
-                        }
-                }   
-                if(verSeleccVehiculo.getText().equals(Jugabilidad.vehiculoDos.getNombre())){
-                    int columnaAnterior = Jugabilidad.vehiculoDos.getPosColumna();
-                    filaVehiculo = Jugabilidad.vehiculoDos.getPosFila();                    
-                    codigo = codigoTerreno[filaVehiculo][mover];
-                        if(posiciones[filaVehiculo][mover]==1){
-                            JOptionPane.showMessageDialog(null, "UN VEHICULO SE ENCUENTRA EN ESTA CASILLA");
-                        }
-                        if(posiciones[filaVehiculo][mover]==2){                        
-                            JOptionPane.showMessageDialog(null, "SE ENCUENTRA UN ENEMIGO EN ESTA POSICION");
-                        } 
-                        if(posiciones[filaVehiculo][mover]==0){
-                            escenario[filaVehiculo][mover].setIcon(moverVehiculo(codigo,filaVehiculo,mover,verTipoVehiculo.getText()));
-                            Boolean errorTanque = IconoTanque.yaIngresado;
-                            Boolean errorAvion = IconoAvion.yaIngresado;
-                            if(errorTanque == false || errorAvion == false){
-                            }else{
-                                posiciones[filaVehiculo][columnaAnterior] = 0;
-                                escenario[filaVehiculo][columnaAnterior].setIcon(terrenos.reinsertarIcono(recibirFila,codigoTerreno[filaVehiculo][columnaAnterior]));
-                            }
-                        }
-                }
-                if(verSeleccVehiculo.getText().equals(Jugabilidad.vehiculoTres.getNombre())){
-                    int columnaAnterior = Jugabilidad.vehiculoTres.getPosColumna();
-                    filaVehiculo = Jugabilidad.vehiculoTres.getPosFila();                    
-                    codigo = codigoTerreno[filaVehiculo][mover];
-                        if(posiciones[filaVehiculo][mover]==1){
-                            JOptionPane.showMessageDialog(null, "UN VEHICULO SE ENCUENTRA EN ESTA CASILLA");
-                        }
-                        if(posiciones[filaVehiculo][mover]==2){                        
-                            JOptionPane.showMessageDialog(null, "SE ENCUENTRA UN ENEMIGO EN ESTA POSICION");
-                        } 
-                        if(posiciones[filaVehiculo][mover]==0){
-                            escenario[filaVehiculo][mover].setIcon(moverVehiculo(codigo,filaVehiculo,mover,verTipoVehiculo.getText()));
-                            Boolean errorTanque = IconoTanque.yaIngresado;
-                            Boolean errorAvion = IconoAvion.yaIngresado;
-                            if(errorTanque == false || errorAvion == false){
-                            }else{
-                                posiciones[filaVehiculo][columnaAnterior] = 0;
-                                escenario[filaVehiculo][columnaAnterior].setIcon(terrenos.reinsertarIcono(recibirFila,codigoTerreno[filaVehiculo][columnaAnterior]));
-                            }
-                        }
+                if(codigoMovimiento == 2){
+                    if(posiciones[filaVehiculo][cambioCasilla]==1){
+                        JOptionPane.showMessageDialog(null, "UN VEHICULO SE ENCUENTRA EN ESTA CASILLA");
+                    }
+                    if(posiciones[filaVehiculo][cambioCasilla]==2){                        
+                        JOptionPane.showMessageDialog(null, "SE ENCUENTRA UN ENEMIGO EN ESTA POSICION");
+                    } 
+                    if(posiciones[filaVehiculo][cambioCasilla]==0){
+                        codigo = codigoTerreno[filaVehiculo][cambioCasilla];                    
+                        escenario[filaVehiculo][cambioCasilla].setIcon(moverVehiculo(codigo,filaVehiculo,cambioCasilla,mostrarTipoVehiculo));
+                        insertarTerreno(filaVehiculo,columnaVehiculo);
+                    }
                 }
                 
+            }else{
+                JOptionPane.showMessageDialog(null, "NO HA SELECCIONADO UN VEHICULO");
             }
-            ataque.ataqueEnemigo(recibirColumna, recibirFila, posiciones);
         }else{
-            JOptionPane.showMessageDialog(null, "NO HA SELECCIONADO UN VEHICULO");
+            JOptionPane.showMessageDialog(null, "NO TIENE SELECCIONADA LA OPCION MOVERSE");
         }
-        }else{
-            JOptionPane.showMessageDialog(null, "NO HA SELECCIONADO LA ACCION MOVIMIENTO");
-        }
+        mostrarPosiciones();
+    }
+    private void seleccMovimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccMovimientoActionPerformed
+        moverVehiculos();
         panelEscenario.updateUI();
     }//GEN-LAST:event_seleccMovimientoActionPerformed
-
-    private void seleccAtacarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccAtacarActionPerformed
+    public void verificarAtaque(int indice){
+        if(vehiculosPartida[indice].getVida() > 0 && codigoVehiculo == vehiculosPartida[indice].getIdentificador()){
+            empezarAtaque();
+        }else{
+            JOptionPane.showMessageDialog(null, "EL VEHICULO  "+ vehiculosPartida[indice].getNombre()+"  ESTA MUERTO, NO PUEDE ATACAR");
+        }
+    }
+    public void realizarAtaque(){
         ganoJuego = verificar.vidaEnemigos();
-        perdioJuego = verificar.vidaVehiculos();
+        perdioJuego = verificar.vidaVehiculosPartida(vehiculosPartida);
         if(ganoJuego ==false && perdioJuego == false){
             if(criterioAtaque == true){
-                if(verSeleccVehiculo.getText().equals(Jugabilidad.vehiculoTres.getNombre())){
-                    if(Jugabilidad.vehiculoTres.getVida() <= 0){
-                        JOptionPane.showMessageDialog(null, "VEHICULO MUERTO, NO PUEDE ATACAR");
-                    }else{
-                        String cadena = String.valueOf(Jugabilidad.vehiculoTres.getAtaque());
-                        ataque.atacar(porcentajeAtaque.getText(),seleccionDireccion, posiciones, recibirColumna, recibirFila,verSeleccVehiculo.getText(),cadena);
-                    }
+                if(codigoVehiculo == vehiculosPartida[0].getIdentificador()){
+                    verificarAtaque(0);
                 }
-                if(verSeleccVehiculo.getText().equals(Jugabilidad.vehiculoDos.getNombre())){
-                    if(Jugabilidad.vehiculoDos.getVida() <= 0){
-                        JOptionPane.showMessageDialog(null, "VEHICULO MUERTO, NO PUEDE ATACAR");
-                    }else{
-                        String cadena = String.valueOf(Jugabilidad.vehiculoDos.getAtaque());
-                        ataque.atacar(porcentajeAtaque.getText(),seleccionDireccion, posiciones, recibirColumna, recibirFila,verSeleccVehiculo.getText(),cadena);
-                    }
+                if(codigoVehiculo == vehiculosPartida[1].getIdentificador()){
+                    verificarAtaque(1);
                 }
-                if(verSeleccVehiculo.getText().equals(Jugabilidad.vehiculoUno.getNombre())){
-                    if(Jugabilidad.vehiculoUno.getVida() <= 0){
-                        JOptionPane.showMessageDialog(null, "VEHICULO MUERTO, NO PUEDE ATACAR");
-                    }else{
-                        String cadena = String.valueOf(Jugabilidad.vehiculoUno.getAtaque());
-                        ataque.atacar(porcentajeAtaque.getText(),seleccionDireccion, posiciones, recibirColumna, recibirFila,verSeleccVehiculo.getText(),cadena);
-                    }    
-                }
-                ataque.ataqueEnemigo(recibirColumna, recibirFila, posiciones);
+                if(codigoVehiculo == vehiculosPartida[2].getIdentificador()){
+                    verificarAtaque(2);
+                }                       
             }else{
-                JOptionPane.showMessageDialog(null, "NO HA SELECCIONADO LA OPCION ATAQUE");
+                JOptionPane.showMessageDialog(null,"NO HA SELECCIONADO LA OPCIÓN ATACAR");
             }
             mostrarEnemigos();
             mostrarVida();
@@ -1006,14 +944,20 @@ public class Escenario extends javax.swing.JFrame {
             verificar.victoriaPartida();
             Inicio inicio = new Inicio();
             inicio.setVisible(true);
-            this.setVisible(false);
         }
         if(perdioJuego == true){
             JOptionPane.showMessageDialog(null, "HAS PERDIDO, TODOS TUS VEHICULOS HAN SIDO DESTRUIDOS");
             Inicio inicio = new Inicio();
             inicio.setVisible(true);
-            this.setVisible(false);
+
         }
+    }
+    public void empezarAtaque(){
+        atacar.atacar(porcentajeAtaque.getText(),seleccionDireccion, posiciones, recibirColumna, recibirFila,codigoVehiculo, vehiculosPartida);
+        ataqueEnemigo.ataqueEnemigo(recibirColumna,recibirFila, posiciones, vehiculosPartida);
+    }
+    private void seleccAtacarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccAtacarActionPerformed
+        realizarAtaque();
     }//GEN-LAST:event_seleccAtacarActionPerformed
 
     private void seleccComodinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccComodinActionPerformed
@@ -1058,6 +1002,7 @@ public class Escenario extends javax.swing.JFrame {
     private void botonArribaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonArribaActionPerformed
         seleccionDireccion ="arriba";
         direccionElegida = true;
+        codigoMovimiento = 1;
         if(criterioMovimiento == true){
             JOptionPane.showMessageDialog(null, "EL VEHICULO SE MOVERA HACIA ARRIBA");
         }
@@ -1133,6 +1078,7 @@ public class Escenario extends javax.swing.JFrame {
     private void botonAbajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAbajoActionPerformed
         seleccionDireccion ="abajo";
         direccionElegida = true;
+        codigoMovimiento = 1;
         if(criterioMovimiento == true){
             JOptionPane.showMessageDialog(null, "EL VEHICULO SE MOVERA HACIA ABAJO");
         }
@@ -1144,6 +1090,7 @@ public class Escenario extends javax.swing.JFrame {
     private void botonIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIzquierdaActionPerformed
         seleccionDireccion ="izquierda";
         direccionElegida = true;
+        codigoMovimiento = 2;
         if(criterioMovimiento == true){
             JOptionPane.showMessageDialog(null, "EL VEHICULO SE MOVERA HACIA LA IZQUIERDA");
         }
@@ -1155,6 +1102,7 @@ public class Escenario extends javax.swing.JFrame {
     private void botonDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonDerechaActionPerformed
         seleccionDireccion ="derecha";
         direccionElegida = true;
+        codigoMovimiento = 2;
         if(criterioMovimiento == true){
             JOptionPane.showMessageDialog(null, "EL VEHICULO SE MOVERA HACIA LA DERECHA");
         }
@@ -1162,6 +1110,17 @@ public class Escenario extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "EL VEHICULO ATACARÁ HACIA LA DERECHA");
         }
     }//GEN-LAST:event_botonDerechaActionPerformed
+
+    private void tablaSeleccionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaSeleccionMouseClicked
+        int fila = this.tablaSeleccion.getSelectedRow();
+        codigoVehiculo = vehiculosPartida[fila].getIdentificador();
+        mostrarTipoVehiculo = vehiculosPartida[fila].getTipoVehiculo();
+        String nombreVehiculo = vehiculosPartida[fila].getNombre();
+        String verCo = String.valueOf(codigoVehiculo);
+        verSeleccVehiculo.setText(nombreVehiculo);
+        verRegistro.setText(mostrarTipoVehiculo);
+        vehiculoElegido = true;
+    }//GEN-LAST:event_tablaSeleccionMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1222,6 +1181,7 @@ public class Escenario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JComboBox<String> listadoCambio;
     private javax.swing.JLabel mostrarNombre;
     private javax.swing.JLabel mostrarTipo;
@@ -1248,9 +1208,11 @@ public class Escenario extends javax.swing.JFrame {
     private javax.swing.JTable tablaAtaqueDefensa;
     private javax.swing.JTable tablaEnemigo;
     private javax.swing.JTable tablaPos;
+    private javax.swing.JTable tablaSeleccion;
     private javax.swing.JTable tablaVida;
     private javax.swing.JLabel verJugador;
     private javax.swing.JLabel verNivel;
+    private javax.swing.JLabel verRegistro;
     private javax.swing.JLabel verSeleccVehiculo;
     private javax.swing.JLabel verTipoVehiculo;
     // End of variables declaration//GEN-END:variables

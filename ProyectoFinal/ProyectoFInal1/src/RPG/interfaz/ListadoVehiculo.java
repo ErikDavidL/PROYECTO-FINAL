@@ -1,7 +1,9 @@
 
 package RPG.interfaz;
 
+import RPG.archivos.ArchivoJugabilidad;
 import RPG.archivos.ArchivoVehiculo;
+import RPG.jugador.Jugador;
 import RPG.vehiculos.Vehiculo;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -9,11 +11,15 @@ import javax.swing.JOptionPane;
 public class ListadoVehiculo extends javax.swing.JFrame {
 
     private ArchivoVehiculo archivoVehiculo = new ArchivoVehiculo();
-    private ArrayList<Vehiculo> listadoVehiculos = new ArrayList<Vehiculo>();
+    private ArchivoJugabilidad archivoPartida = new ArchivoJugabilidad();
+    private ArrayList<Vehiculo> listadoVehiculos = new ArrayList<>();
     private String dato,nombreComparado, nombre, tipoVehiculo,armaIntegrada,creadorVehiculo;
     private int vida,eliminaciones,ataque,defensa;
-    private int contadorVehiculo = 0;
- 
+    private int contadorVehiculo = 0,codigoAutor;
+    Vehiculo[] vehiculosPartida = new Vehiculo[3];
+    String vacio = "vacio";
+    Jugador jugador= null;
+    
     String[] arregloTemporal = new String[3];
     
     public static Vehiculo vehiculoUno;
@@ -27,14 +33,13 @@ public class ListadoVehiculo extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         listadoVehiculos = archivoVehiculo.leerArchivo();
         creadorVehiculo = ListadoJugador.nombre;
+        jugador = archivoPartida.leerJugador();
         mostrarListado(); 
-        listadoNulo();
+        vehiculosPartida[0] = new Vehiculo(vacio,vacio,vacio,vacio,0,0,0,0,0,0,0,0);
+        vehiculosPartida[1] = new Vehiculo(vacio,vacio,vacio,vacio,0,0,0,0,0,0,0,0);
+        vehiculosPartida[2] = new Vehiculo(vacio,vacio,vacio,vacio,0,0,0,0,0,0,0,0);
         verContador.setText("3");
-    }
-    public void listadoNulo(){
-        arregloTemporal[0] = "";
-        arregloTemporal[1] = "";
-        arregloTemporal[2] = "";
+        actualizarListado();
     }
     public void mostrarListado(){
         String listado[][] = new String[listadoVehiculos.size()][5];
@@ -49,65 +54,70 @@ public class ListadoVehiculo extends javax.swing.JFrame {
         tablaVehiculo.setModel(new javax.swing.table.DefaultTableModel(listado,new String [] {
                 "NO.","NOMBRE", "TIPO DE VEHICULO", "ARMA INTEGRADA","PERTENECE A"
         }));
-    } 
-    public void mostrarVehiculos(){       
-        String [][] listadoJuego = new String[3][3];
-            listadoJuego[0][0] = vehiculoUno.getNombre();
-            listadoJuego[1][0] = vehiculoDos.getNombre();
-            listadoJuego[2][0] = vehiculoTres.getNombre();
-            listadoJuego[0][1] = vehiculoUno.getTipoVehiculo();
-            listadoJuego[1][1] = vehiculoDos.getTipoVehiculo();
-            listadoJuego[2][1] = vehiculoTres.getTipoVehiculo();
-            listadoJuego[0][2] = vehiculoUno.getArmaIntegrada();
-            listadoJuego[1][2] = vehiculoDos.getArmaIntegrada();
-            listadoJuego[2][2] = vehiculoTres.getArmaIntegrada();
-        tablaSeleccionados.setModel(new javax.swing.table.DefaultTableModel(listadoJuego, new String [] {
-                "NOMBRE", "TIPO DE VEHICULO", "ARMA INTEGRADA"
-            }
-        ));
     }
-        
+    public void actualizarListado(){
+        String listado[][] = new String[3][5];
+        String cadena;
+        for (int i = 0; i < 3; i++) {
+            listado[i][0]= cadena = String.valueOf(vehiculosPartida[i].getIdentificador());
+            listado[i][1]= vehiculosPartida[i].getNombre();
+            listado[i][2]= vehiculosPartida[i].getTipoVehiculo();
+            listado[i][3]= vehiculosPartida[i].getArmaIntegrada();
+            listado[i][4]= vehiculosPartida[i].getCreadorAuto();
+        }
+        tablaSeleccionados.setModel(new javax.swing.table.DefaultTableModel(listado,new String [] {
+                "REGISTRO","NOMBRE", "TIPO DE VEHICULO", "ARMA INTEGRADA","PERTENECE A"
+        }));
+    }         
     public void obtenerVehiculo(int contador){
         int fila = this.tablaVehiculo.getSelectedRow();
-        nombre = String.valueOf(this.tablaVehiculo.getValueAt(fila,1));
+        nombre = listadoVehiculos.get(fila).getNombre();
         tipoVehiculo = String.valueOf(this.tablaVehiculo.getValueAt(fila,2));
         armaIntegrada = String.valueOf(this.tablaVehiculo.getValueAt(fila,3)); 
         String comparador = String.valueOf(this.tablaVehiculo.getValueAt(fila,0));
-        int codigoComparador = Integer.parseInt(comparador);
+        int codigoComparador = listadoVehiculos.get(fila).getIdentificador();
         arregloTemporal[contadorVehiculo] = comparador;
         vida = listadoVehiculos.get(fila).getVida();
         ataque = listadoVehiculos.get(fila).getAtaque();
         defensa = listadoVehiculos.get(fila).getDefensa();
         eliminaciones = listadoVehiculos.get(fila).getVida();
-        if(contador == 0){
-            vehiculoUno = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,codigoComparador,vida,ataque,defensa,0,0,eliminaciones);
-        }
+        int codigoCreador = listadoVehiculos.get(fila).getCodigoCreador();
+            
         if(contador == 1){
-            vehiculoDos = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,codigoComparador,vida,ataque,defensa,0,0,eliminaciones);
+            vehiculoDos = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,codigoComparador,vida,ataque,defensa,0,0,eliminaciones,codigoCreador);
+            vehiculosPartida[1] = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,codigoComparador,vida,ataque,defensa,0,0,eliminaciones,codigoCreador);
         }
         if(contador == 2){
-            vehiculoTres = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,codigoComparador,vida,ataque,defensa,0,0,eliminaciones);
-        }   
+            vehiculoTres = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,codigoComparador,vida,ataque,defensa,0,0,eliminaciones,codigoCreador);
+            vehiculosPartida[2] = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,codigoComparador,vida,ataque,defensa,0,0,eliminaciones,codigoCreador);
+        } 
+        if(contador == 0){
+            vehiculoUno = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,codigoComparador,vida,ataque,defensa,0,0,eliminaciones,codigoCreador);
+            vehiculosPartida[0] = new Vehiculo(nombre, tipoVehiculo,armaIntegrada,creadorVehiculo,codigoComparador,vida,ataque,defensa,0,0,eliminaciones,codigoCreador);
+        }
         
     }
     public void seleccionVehiculos(){
         int fila = this.tablaVehiculo.getSelectedRow();
-        dato = String.valueOf(this.tablaVehiculo.getValueAt(fila,0));
         nombreComparado = String.valueOf(this.tablaVehiculo.getValueAt(fila,4));
-        if(nombreComparado.equals(creadorVehiculo)){
-            if(dato.equals(arregloTemporal[0]) || dato.equals(arregloTemporal[1]) || dato.equals(arregloTemporal[2])){
+        codigoAutor = listadoVehiculos.get(fila).getCodigoCreador();
+        int codigoVehiculo = listadoVehiculos.get(fila).getIdentificador();
+        int codigoJugador = jugador.getIdentificador();
+        
+        if(codigoAutor == codigoJugador){
+            if(codigoVehiculo== vehiculosPartida[0].getIdentificador() || codigoVehiculo== vehiculosPartida[1].getIdentificador() || codigoVehiculo== vehiculosPartida[2].getIdentificador()){
                 JOptionPane.showMessageDialog(null, "EL VEHICULO YA FUE SELECCIONADO");
             }else{
                 cupoLleno(contadorVehiculo);       
                 contadorVehiculo++;
                 String cadena = Integer.toString(contadorVer);
-     
                 verContador.setText(cadena);
                 contadorVer--;
             }
         }else{
             JOptionPane.showMessageDialog(null, "EL VEHICULO NO PERTENECE AL JUGADOR SELECCIONADO");
         }
+        actualizarListado();
     }
     public void cupoLleno(int noContador){    
         if(noContador < 3){
@@ -132,7 +142,6 @@ public class ListadoVehiculo extends javax.swing.JFrame {
         dibujo = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaSeleccionados = new javax.swing.JTable();
-        verSeleccionados = new javax.swing.JButton();
         iniciarPartida = new javax.swing.JButton();
         reelegir = new javax.swing.JButton();
         fondo = new javax.swing.JLabel();
@@ -221,7 +230,7 @@ public class ListadoVehiculo extends javax.swing.JFrame {
                 salirActionPerformed(evt);
             }
         });
-        getContentPane().add(salir, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 510, 170, 40));
+        getContentPane().add(salir, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 530, 170, 60));
 
         dibujo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenesFondo/tanques.png"))); // NOI18N
         getContentPane().add(dibujo, new org.netbeans.lib.awtextra.AbsoluteConstraints(-170, -170, 1090, -1));
@@ -238,17 +247,7 @@ public class ListadoVehiculo extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablaSeleccionados);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 420, 630, 90));
-
-        verSeleccionados.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 12)); // NOI18N
-        verSeleccionados.setForeground(new java.awt.Color(0, 0, 0));
-        verSeleccionados.setText("VER SELECCIONADOS");
-        verSeleccionados.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                verSeleccionadosActionPerformed(evt);
-            }
-        });
-        getContentPane().add(verSeleccionados, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 530, 190, 40));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 420, 840, 90));
 
         iniciarPartida.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 12)); // NOI18N
         iniciarPartida.setForeground(new java.awt.Color(0, 0, 0));
@@ -258,7 +257,7 @@ public class ListadoVehiculo extends javax.swing.JFrame {
                 iniciarPartidaActionPerformed(evt);
             }
         });
-        getContentPane().add(iniciarPartida, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 420, 170, 60));
+        getContentPane().add(iniciarPartida, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 530, 170, 60));
 
         reelegir.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 12)); // NOI18N
         reelegir.setForeground(new java.awt.Color(0, 0, 0));
@@ -268,10 +267,10 @@ public class ListadoVehiculo extends javax.swing.JFrame {
                 reelegirActionPerformed(evt);
             }
         });
-        getContentPane().add(reelegir, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 530, 190, 40));
+        getContentPane().add(reelegir, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 530, 190, 60));
 
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenesFondo/verde.jpg"))); // NOI18N
-        getContentPane().add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 920, 590));
+        getContentPane().add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 920, 620));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -286,18 +285,11 @@ public class ListadoVehiculo extends javax.swing.JFrame {
         seleccionVehiculos();
     }//GEN-LAST:event_tablaVehiculoMouseClicked
 
-    private void verSeleccionadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verSeleccionadosActionPerformed
-        if(contadorVehiculo < 3){
-            JOptionPane.showMessageDialog(null, "NO HA TERMINADO DE SELECCIONAR LOS VEHICULOS"); 
-        }else{
-            mostrarVehiculos();
-        }
-    }//GEN-LAST:event_verSeleccionadosActionPerformed
-
     private void iniciarPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarPartidaActionPerformed
         if(contadorVehiculo < 3){
             JOptionPane.showMessageDialog(null, "NO SE PUEDE INICIAR LA PARTIDA, COMPLETE LA SELECION"); 
         }else{
+            archivoPartida.guardarVehiculos(vehiculosPartida);
             Escenario escenario = new Escenario();
             escenario.setVisible(true);
             this.setVisible(false);
@@ -358,6 +350,5 @@ public class ListadoVehiculo extends javax.swing.JFrame {
     private javax.swing.JTable tablaVehiculo;
     private javax.swing.JLabel titulo;
     private javax.swing.JLabel verContador;
-    private javax.swing.JButton verSeleccionados;
     // End of variables declaration//GEN-END:variables
 }

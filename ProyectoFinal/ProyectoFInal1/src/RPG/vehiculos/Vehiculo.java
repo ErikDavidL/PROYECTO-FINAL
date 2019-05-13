@@ -16,7 +16,9 @@ public class Vehiculo implements Serializable{
     private int posFila;
     private int posColumna;
     private int eliminaciones;
+    private int codigoCreador;
 
+    
     public String getNombre() {
         return nombre;
     }
@@ -77,16 +79,20 @@ public class Vehiculo implements Serializable{
     public void setPosColumna(int posColumna) {
         this.posColumna = posColumna;
     }
-
     public int getEliminaciones() {
         return eliminaciones;
     }
-
     public void setEliminaciones(int eliminaciones) {
         this.eliminaciones = eliminaciones;
     }
+    public int getCodigoCreador() {
+        return codigoCreador;
+    }
+    public void setCodigoCreador(int codigoCreador) {
+        this.codigoCreador = codigoCreador;
+    }
     
-    public Vehiculo(String nombre, String tipoVehiculo, String armaIntegrada, String creadorAuto, int identificador,int vida,int ataque, int defensa,int posFila,int posColumna,int eliminaciones) {
+    public Vehiculo(String nombre, String tipoVehiculo, String armaIntegrada, String creadorAuto, int identificador,int vida,int ataque, int defensa,int posFila,int posColumna,int eliminaciones,int codigoCreador) {
         this.nombre = nombre;
         this.tipoVehiculo = tipoVehiculo;
         this.armaIntegrada = armaIntegrada;
@@ -98,7 +104,8 @@ public class Vehiculo implements Serializable{
         this.posFila = posFila;
         this.posColumna = posColumna;
         this.eliminaciones = eliminaciones;
-    }
+        this.codigoCreador = codigoCreador;
+    }   
     
     
     

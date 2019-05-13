@@ -1,6 +1,7 @@
 
 package RPG.interfaz;
 
+import RPG.archivos.ArchivoJugabilidad;
 import RPG.archivos.ArchivoJugador;
 import RPG.jugador.Jugador;
 import java.util.ArrayList;
@@ -8,12 +9,14 @@ import java.util.ArrayList;
 public class ListadoJugador extends javax.swing.JFrame {
 
     private ArchivoJugador archivoJugador = new ArchivoJugador();
-    private ArrayList<Jugador> listaJugador =  new ArrayList<Jugador>();
+    private ArrayList<Jugador> listaJugador =  new ArrayList<>();
     public static String nombre;
     public static int nivel;
     public int experiencia;
     public int dinero;
     public static int identificador;
+    private Jugador jugadorSeleccionado = null;
+    private ArchivoJugabilidad jugadorPartida = new ArchivoJugabilidad();
     
     public ListadoJugador() {
         initComponents();
@@ -32,11 +35,13 @@ public class ListadoJugador extends javax.swing.JFrame {
     public String obtenerJugador(){
         int fila = this.tablaJugador.getSelectedRow();
         int columna = this.tablaJugador.getSelectedColumn();
-        nombre = String.valueOf(this.tablaJugador.getValueAt(fila,columna));
+        nombre = listaJugador.get(fila).getNombre();
         nivel = listaJugador.get(fila).getNivel();
         experiencia = listaJugador.get(fila).getExperiencia();
-        dinero = listaJugador.get(fila).getDinero();
         identificador = listaJugador.get(fila).getIdentificador();
+        dinero = listaJugador.get(fila).getDinero();
+        jugadorSeleccionado = new Jugador(nombre,nivel,experiencia,identificador,dinero);
+        jugadorPartida.guardarJugador(jugadorSeleccionado);
         return nombre;
     }
     @SuppressWarnings("unchecked")

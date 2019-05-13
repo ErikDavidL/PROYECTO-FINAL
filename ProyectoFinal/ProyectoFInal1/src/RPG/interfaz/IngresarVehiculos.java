@@ -3,7 +3,6 @@ package RPG.interfaz;
 
 import RPG.archivos.ArchivoJugador;
 import RPG.archivos.ArchivoVehiculo;
-import RPG.excepciones.Enteros;
 import RPG.jugador.Jugador;
 import RPG.vehiculos.Vehiculo;
 import java.awt.Image;
@@ -24,6 +23,8 @@ public class IngresarVehiculos extends javax.swing.JFrame {
     private String[][] jugadorSeleccionado;
     private String verJugador;    
     private String arma;
+    String nombreJugador;
+    int codigoJugador;
     private final int vidaInicial = 50;
     private final int eliminaciones = 0;
     private final int ataqueInicial = 10;
@@ -52,49 +53,32 @@ public class IngresarVehiculos extends javax.swing.JFrame {
         verJugadores.setModel(new javax.swing.table.DefaultTableModel(
             listado,
             new String [] {
-                "NO.", "JUGADOR"
+                "REGISTRO", "JUGADOR"
             }
         ));
         return jugadorSeleccionado = listado;
     }    
-    public void busquedaJugador(){     
-        if(Enteros.isNumeric(numeroJugador.getText())){
-            indice = Integer.parseInt(numeroJugador.getText());
-            indice--; 
-            if(indice < listadoJugador.size() && 0 <= indice ){                       
-                mostrarBusqueda(indice);
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "EL NUMERO SELECCIONADO NO EXISTE EN EL LISTADO");
-                numeroJugador.setText(null);
-            }
-        }else{
-            JOptionPane.showMessageDialog(null, "INGRESE UN VALOR CORRECTO");
-            numeroJugador.setText(null);
-        }  
-    }
+    
     public void mostrarBusqueda(int indice){
         verJugador = jugadorSeleccionado[indice][1];
         verPlayer.setText(verJugador);
     }
     public void errorVacio(){
-        String texto= numeroJugador.getText();
         String textoJugador= verPlayer.getText();
         String textoArma= nombreVehiculo.getText();
         String textoTipo= tipoVehiculo.getText();
-        
-        texto = texto.replaceAll(" ", "");        
+                
         textoJugador = textoJugador.replaceAll(" ", "");
         textoArma = textoArma.replaceAll(" ", "");     
         textoTipo = textoTipo.replaceAll(" ", "");
         
-        if(texto.length()==0 || textoJugador.length()==0 || textoArma.length()==0 || textoTipo.length()==0){
+        if(textoJugador.length()==0 || textoArma.length()==0 || textoTipo.length()==0){
             JOptionPane.showMessageDialog(null, "CAMPOS VACIOS, POR FAVOR INGRESE TODOS LOS DATOS");            
         }else{
             arma = (String)armaNueva.getSelectedItem();
             int noIdentificador = listaVehiculo.size()+1;
             String identificador = Integer.toString(noIdentificador);
-            Vehiculo nuevoVehiculo = new Vehiculo(nombreVehiculo.getText(),tipoVehiculo.getText(),arma,verPlayer.getText(),noIdentificador,vidaInicial,ataqueInicial,defensaInicial,0,0,eliminaciones);
+            Vehiculo nuevoVehiculo = new Vehiculo(nombreVehiculo.getText(),tipoVehiculo.getText(),arma,verPlayer.getText(),noIdentificador,vidaInicial,ataqueInicial,defensaInicial,0,0,eliminaciones,codigoJugador);
             listaVehiculo.add(nuevoVehiculo);
             archivoVehiculo.guardarArchivo(listaVehiculo);
             JOptionPane.showMessageDialog(null, "VEHÍCULO CREADO CON ÉXITO");
@@ -103,10 +87,15 @@ public class IngresarVehiculos extends javax.swing.JFrame {
             nombreVehiculo.setText(null);
             tipoVehiculo.setText(null);
             verPlayer.setText(null);
-            numeroJugador.setText(null);
+            
         }
     }
-    
+    public void obtenerDatosJugador(){
+        int fila = this.verJugadores.getSelectedRow();
+        nombreJugador = listadoJugador.get(fila).getNombre();
+        codigoJugador = listadoJugador.get(fila).getIdentificador();
+        verPlayer.setText(nombreJugador);
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -128,14 +117,13 @@ public class IngresarVehiculos extends javax.swing.JFrame {
         cancelar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         verJugadores = new javax.swing.JTable();
-        seleccionar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        numeroJugador = new javax.swing.JTextField();
         infoJ = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         infoJugadr = new javax.swing.JLabel();
         panelVerPlayer = new javax.swing.JPanel();
         verPlayer = new javax.swing.JLabel();
+        verCodigoJugador = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         fondo = new javax.swing.JLabel();
 
@@ -266,23 +254,19 @@ public class IngresarVehiculos extends javax.swing.JFrame {
                 "NO.", "JUGADOR"
             }
         ));
-        jScrollPane1.setViewportView(verJugadores);
-
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 80, 380, 140));
-
-        seleccionar.setText("SELECCIONAR");
-        seleccionar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                seleccionarActionPerformed(evt);
+        verJugadores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                verJugadoresMouseClicked(evt);
             }
         });
-        getContentPane().add(seleccionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 260, -1, 40));
+        jScrollPane1.setViewportView(verJugadores);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 140, 380, 160));
 
         jLabel1.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("SELECCIONE EL NUMERO DEL JUGADOR");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 230, 320, 30));
-        getContentPane().add(numeroJugador, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 260, 240, 40));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 100, 320, 30));
 
         infoJ.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 14)); // NOI18N
         infoJ.setForeground(new java.awt.Color(255, 255, 255));
@@ -304,17 +288,23 @@ public class IngresarVehiculos extends javax.swing.JFrame {
         verPlayer.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 16)); // NOI18N
         verPlayer.setForeground(new java.awt.Color(0, 0, 0));
 
+        verCodigoJugador.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 16)); // NOI18N
+        verCodigoJugador.setForeground(new java.awt.Color(0, 0, 0));
+
         javax.swing.GroupLayout panelVerPlayerLayout = new javax.swing.GroupLayout(panelVerPlayer);
         panelVerPlayer.setLayout(panelVerPlayerLayout);
         panelVerPlayerLayout.setHorizontalGroup(
             panelVerPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelVerPlayerLayout.createSequentialGroup()
-                .addGap(0, 39, Short.MAX_VALUE)
-                .addComponent(verPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addComponent(verCodigoJugador, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(verPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         panelVerPlayerLayout.setVerticalGroup(
             panelVerPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(verPlayer, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+            .addComponent(verCodigoJugador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         getContentPane().add(panelVerPlayer, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 360, 370, 40));
@@ -347,10 +337,9 @@ public class IngresarVehiculos extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_cancelarActionPerformed
 
-    private void seleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionarActionPerformed
-        busquedaJugador();
-        
-    }//GEN-LAST:event_seleccionarActionPerformed
+    private void verJugadoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verJugadoresMouseClicked
+        obtenerDatosJugador();                
+    }//GEN-LAST:event_verJugadoresMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -403,13 +392,12 @@ public class IngresarVehiculos extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField nombreVehiculo;
-    private javax.swing.JTextField numeroJugador;
     private javax.swing.JPanel panelTipo;
     private javax.swing.JPanel panelVerPlayer;
-    private javax.swing.JButton seleccionar;
     private javax.swing.JButton tanque;
     private javax.swing.JLabel tipoVehiculo;
     private javax.swing.JLabel titulo;
+    private javax.swing.JLabel verCodigoJugador;
     private javax.swing.JTable verJugadores;
     private javax.swing.JLabel verPlayer;
     // End of variables declaration//GEN-END:variables

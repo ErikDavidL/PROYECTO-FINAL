@@ -22,7 +22,6 @@ public class ArchivoJugador {
             objetoArchivo.writeObject(jugadores);
         }
         catch(IOException ex){
-            System.out.println("Ha ocurrido un error en el archivo");
         }
     }
     
@@ -35,10 +34,8 @@ public class ArchivoJugador {
             jugadores = (ArrayList<Jugador>) salidaArchivo.readObject();
         }
         catch(ClassNotFoundException ex){
-            System.out.println("No se encuentra el archivo");
         }
         catch(IOException ex){
-            System.out.println("Ha ocurrido un error en el archivo");
         }
         return jugadores;
     }
